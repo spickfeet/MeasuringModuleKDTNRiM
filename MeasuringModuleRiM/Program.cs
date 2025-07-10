@@ -56,6 +56,10 @@ public class SerialPortExample
         Console.WriteLine("phaseBOrNonPhaseIndication " + electricalIndicators.phaseBOrNonPhaseIndication);
         Console.WriteLine("phaseCOrNonPhaseIndication " + electricalIndicators.phaseCOrNonPhaseIndication);
 
+        Console.WriteLine();
+        // Чтение серийного номера
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+
         kdtn.StartCommunication();
 
     }

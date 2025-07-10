@@ -50,10 +50,30 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes, 24);
 
+            // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
                 throw new Exception($"Error getting electrical indicators. Error code: " +
                     $"{BitConverter.ToInt32(receive.Skip(18).Take(4).ToArray(), 0)}");
+            }
+            return receive;
+        }
+
+        public byte[] ReadSerialNumber()
+        {
+            // Формирование данных для отправки
+            byte[] writeBytes = new byte[7];
+            writeBytes[3] = 0x7F;
+            writeBytes[4] = 0x02;
+            writeBytes = CRC.AddCRC(writeBytes);
+
+            // Отправка данных
+            byte[] receive = DeviceCommunication.SendCommand(writeBytes, 10);
+
+            // Проверка кода операции 
+            if (receive[3] != writeBytes[3])
+            {
+                throw new Exception($"Error getting serial number.");
             }
             return receive;
         }

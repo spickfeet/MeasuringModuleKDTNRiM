@@ -57,6 +57,11 @@ namespace MeasuringModuleRiM
             return _kdtnParser.ParseVersionAndType(_deviceInformationCommand.ReadVersionTypeAndType(_serialNumber));
         }
 
+        public int ReadWorkTimeSeconds()
+        {
+            return _kdtnParser.ParseWorkTimeSeconds(_deviceInformationCommand.ReadWorkTimeSeconds(_serialNumber));
+        }
+
         /// <summary>
         /// Тип параметра: 
         /// 0 – активная мощность, Вт (фаза А);  
@@ -71,9 +76,10 @@ namespace MeasuringModuleRiM
         {
             return _kdtnParser.ParseElectricalIndicators(_serviceCommand.ReadElectricalIndicators(_serialNumber, paramType));
         }
-        public int ReadWorkTimeSeconds()
+
+        public int ReadSerialNumber()
         {
-            return _kdtnParser.ParseWorkTimeSeconds(_deviceInformationCommand.ReadWorkTime(_serialNumber));
+            return _kdtnParser.ReadSerialNumber(_serviceCommand.ReadSerialNumber());
         }
     }
 }

@@ -37,7 +37,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             }
             return receive;
         }
-        public byte[] ReadWorkTime(byte[] serialNumber)
+        public byte[] ReadWorkTimeSeconds(byte[] serialNumber)
         {
             // Формирование данных для отправки
             byte[] writeBytes = new byte[7];

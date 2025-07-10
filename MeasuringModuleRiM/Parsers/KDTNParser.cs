@@ -42,5 +42,11 @@ namespace MeasuringModuleRiM.Parsers
         {
             return BitConverter.ToInt32(data.Skip(5).Take(4).ToArray(), 0);
         }
+        public int ReadSerialNumber(byte[] data)
+        {
+            byte[] serialNumberBytes = data.Skip(5).Take(3).ToArray();
+            Array.Resize(ref serialNumberBytes, 4);
+            return BitConverter.ToInt32(serialNumberBytes);
+        }
     }
 }

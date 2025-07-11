@@ -136,5 +136,28 @@ namespace MeasuringModuleRiM
         {
             return _calibrationCommand.WriteCalibrationDate(_serialNumber, dateTime);
         }
+
+        /// <summary>
+        /// constPtr = 0 - WGAIN
+        /// constPtr = 1 - WOFFS
+        /// constPtr = 2 - VARGAIN
+        /// constPtr = 3 - VAROFFS
+        /// constPtr = 4 - PHCAL
+        /// constPtr = 5 - VRMSGAIN
+        /// constPtr = 6 - IRMSGAIN
+        /// constPtr = 7 - CTGAIN
+        /// constPtr = 8 - FREQCAL
+        /// constPtr = 9 - IRMSOFFS
+        /// constPtr = 10 - CTGAIN_ Q 
+        /// constPtr = 11 - VDIV_PH
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <param name="constPtr"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public int ReadCalibrationConst(int constPtr)
+        {
+            return _kdtnParser.ParseCalibrationConst(_calibrationCommand.ReadCalibrationConst(_serialNumber, constPtr));
+        }
     }
 }

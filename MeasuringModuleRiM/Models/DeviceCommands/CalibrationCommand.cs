@@ -17,6 +17,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             CRC = crc;
             DeviceCommunication = deviceCommunication;
         }
+
         public byte[] ReadCalibrationDate(byte[] serialNumber)
         {
             // Формирование данных для отправки
@@ -66,6 +67,51 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             if (receive[3] != writeBytes[3])
             {
                 throw new Exception($"Error write calibration date.");
+            }
+            return receive;
+        }
+
+        /// <summary>
+        /// constPtr = 0 - WGAIN
+        /// constPtr = 1 - WOFFS
+        /// constPtr = 2 - VARGAIN
+        /// constPtr = 3 - VAROFFS
+        /// constPtr = 4 - PHCAL
+        /// constPtr = 5 - VRMSGAIN
+        /// constPtr = 6 - IRMSGAIN
+        /// constPtr = 7 - CTGAIN
+        /// constPtr = 8 - FREQCAL
+        /// constPtr = 9 - IRMSOFFS
+        /// constPtr = 10 - CTGAIN_ Q 
+        /// constPtr = 11 - VDIV_PH
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <param name="constPtr"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public byte[] ReadCalibrationConst(byte[] serialNumber, int constPtr)
+        {
+            if (constPtr < 0 || constPtr > 11)
+            {
+                throw new ArgumentException("Error unknown const pointer");
+            }
+            // Формирование данных для отправки
+            byte[] writeBytes = new byte[8];
+            Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
+            writeBytes[3] = 0x72;
+            writeBytes[4] = 0x03;
+            writeBytes[5] = (byte)constPtr;
+
+            writeBytes = CRC.AddCRC(writeBytes);
+
+            // Отправка данных
+            byte[] receive = DeviceCommunication.SendCommand(writeBytes, 10);
+
+            // Проверка кода операции
+            if (receive[3] != writeBytes[3])
+            {
+                throw new Exception($"Error reading calibration const. Error code: " +
+                    $"{(int)receive[5]}");
             }
             return receive;
         }

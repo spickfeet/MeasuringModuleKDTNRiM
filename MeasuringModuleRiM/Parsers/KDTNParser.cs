@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MeasuringModuleRiM.Parsers
 {
@@ -76,6 +77,18 @@ namespace MeasuringModuleRiM.Parsers
             };
             RFSettings rFSettings = new(channel, power);
             return rFSettings;
+        }
+
+        public int ParseCalibrationConst(byte[] data)
+        {
+            if (data[5] == 1 || data[5] == 3 || data[5] == 9)
+            {
+                return (int)BitConverter.ToInt16(data.Skip(6).Take(2).ToArray(), 0);
+            }
+            else 
+            {
+                return (int)BitConverter.ToUInt16(data.Skip(6).Take(2).ToArray(), 0);
+            }
         }
     }
 }

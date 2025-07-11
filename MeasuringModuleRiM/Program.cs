@@ -107,6 +107,15 @@ public class SerialPortExample
         Console.WriteLine();
 
         // Чтение даты калибровки модуля
+        DateTime calibrationDate = kdtn.ReadCalibrationDate();
+        Console.WriteLine($"CalibrationDate {calibrationDate}");
+
+        // Обновление даты калибровки модуля
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationDate(DateTime.Now))}");
+        Console.WriteLine($"CalibrationDate {kdtn.ReadCalibrationDate()}");
+
+        // Возврат даты калибровки модуля
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationDate(calibrationDate))}");
         Console.WriteLine($"CalibrationDate {kdtn.ReadCalibrationDate()}");
 
 

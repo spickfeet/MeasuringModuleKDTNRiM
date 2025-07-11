@@ -131,7 +131,10 @@ namespace MeasuringModuleRiM
             TimeSpan timeSpan = TimeSpan.FromSeconds(_kdtnParser.ParseTimeSeconds(_calibrationCommand.ReadCalibrationDate(_serialNumber)));
             DateTime baseDate = new(2000, 1, 1);
             return baseDate.Add(timeSpan);
-
+        }
+        public byte[] WriteCalibrationDate(DateTime dateTime)
+        {
+            return _calibrationCommand.WriteCalibrationDate(_serialNumber, dateTime);
         }
     }
 }

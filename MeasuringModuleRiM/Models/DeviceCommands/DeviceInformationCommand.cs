@@ -33,7 +33,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             if (receive[3] != writeBytes[3])
             {
                 throw new Exception($"Error getting device type and software version. Error code: " +
-                    $"{BitConverter.ToInt32(receive.Skip(6).Take(4).ToArray(), 0)}");
+                    $"{BitConverter.ToInt32(receive.Skip(5).Take(4).ToArray(), 0)}");
             }
             return receive;
         }

@@ -18,6 +18,7 @@ namespace MeasuringModuleRiM
         private DeviceInformationCommand _deviceInformationCommand;
         private ServiceCommand _serviceCommand;
         private RFSettingsCommand _rfSettingsCommand;
+        private CalibrationCommand _calibrationCommand;
         private byte[] _serialNumber;
         private IDeviceCommunication _deviceCommunication;
         private KDTNParser _kdtnParser;
@@ -33,6 +34,7 @@ namespace MeasuringModuleRiM
             _deviceInformationCommand = new(crc, deviceCommunication);
             _serviceCommand = new(crc, deviceCommunication);
             _rfSettingsCommand = new(crc, deviceCommunication);
+            _calibrationCommand = new(crc, deviceCommunication);
         }
         public void StartCommunication()
         {
@@ -59,9 +61,9 @@ namespace MeasuringModuleRiM
             return _kdtnParser.ParseVersionAndType(_deviceInformationCommand.ReadVersionTypeAndType(_serialNumber));
         }
 
-        public int ReadWorkTimeSeconds()
+        public TimeSpan ReadWorkTime()
         {
-            return _kdtnParser.ParseWorkTimeSeconds(_deviceInformationCommand.ReadWorkTimeSeconds(_serialNumber));
+            return TimeSpan.FromSeconds(_kdtnParser.ParseTimeSeconds(_deviceInformationCommand.ReadWorkTimeSeconds(_serialNumber)));
         }
 
         /// <summary>
@@ -104,8 +106,6 @@ namespace MeasuringModuleRiM
             return _kdtnParser.ParseRFSettings(_rfSettingsCommand.ReadRFSettings(_serialNumber));
         }
 
-
-
         /// <summary>
         /// channelNumber от 1 до 8;
         /// Мощность излучения от 0 до 7:
@@ -124,6 +124,18 @@ namespace MeasuringModuleRiM
         public byte[] WriteRFSettings(int channelNumber, int power) 
         {
             return _rfSettingsCommand.WriteRFSettings(_serialNumber, channelNumber, power);
+        }
+
+        public int ReadCalibrationTimeSeconds()
+        {
+            return _kdtnParser.ParseTimeSeconds(_deviceInformationCommand.ReadWorkTimeSeconds(_serialNumber));
+        }
+        public DateTime ReadCalibrationDate()
+        {
+            TimeSpan timeSpan = TimeSpan.FromSeconds(_kdtnParser.ParseTimeSeconds(_calibrationCommand.ReadCalibrationDate(_serialNumber)));
+            DateTime baseDate = new(2000, 1, 1);
+            return baseDate.Add(timeSpan);
+
         }
     }
 }

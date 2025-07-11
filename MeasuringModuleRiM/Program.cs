@@ -47,7 +47,7 @@ public class SerialPortExample
         Console.WriteLine();
 
         // Чтение счётчика наработки
-        TimeSpan timeSpan = TimeSpan.FromSeconds(kdtn.ReadWorkTimeSeconds());
+        TimeSpan timeSpan = kdtn.ReadWorkTime();
         Console.WriteLine($"WorkTime {timeSpan.Days} дней {timeSpan.Hours}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}");
 
         Console.WriteLine();
@@ -68,7 +68,7 @@ public class SerialPortExample
         // Чтение серийного номера
         Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         // Проверка работы с новым серийным номером
-        timeSpan = TimeSpan.FromSeconds(kdtn.ReadWorkTimeSeconds());
+        timeSpan = kdtn.ReadWorkTime();
         Console.WriteLine($"WorkTime {timeSpan.Days} дней {timeSpan.Hours}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}");
 
         // Возвращение старого значения у серийного номера
@@ -105,6 +105,9 @@ public class SerialPortExample
         Console.WriteLine($"channelNumber {rFSettings.channelNumber}");
         Console.WriteLine($"power {rFSettings.power} dBm");
         Console.WriteLine();
+
+        // Чтение даты калибровки модуля
+        Console.WriteLine($"CalibrationDate {kdtn.ReadCalibrationDate()}");
 
 
         kdtn.StartCommunication();

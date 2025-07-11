@@ -1,17 +1,12 @@
 ﻿using MeasuringModuleRiM.Models.CRC;
 using MeasuringModuleRiM.Models.DeviceCommunications;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MeasuringModuleRiM.Models.DeviceCommands
 {
     internal class ServiceCommand : IDeviceCommand
     {
         public ICRC CRC { get; private set; }
-        public IDeviceCommunication DeviceCommunication { get; private set; }
+        public IDeviceCommunication DeviceCommunication { get; private set; } 
         /// <summary>
         /// 
         /// </summary>
@@ -73,7 +68,41 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error getting serial number.");
+                byte[] serialNumberBytes = receive.Skip(5).Take(3).ToArray();
+                Array.Resize(ref serialNumberBytes, 4);
+                throw new Exception($"Error getting serial number. Error code: {BitConverter.ToInt32(serialNumberBytes)}");
+            }
+            return receive;
+        }
+        /// <summary>
+        /// Изменить серийный номер на значение от 0 до 16777215
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public byte[] WriteSerialNumber(int serialNumber)
+        {
+            if(serialNumber < 0 || serialNumber > 16777215)
+            {
+                throw new ArgumentException("Error serial number must be between 0 and 16777215");
+            }
+            // Формирование данных для отправки
+            byte[] serialNumberBytes = BitConverter.GetBytes(serialNumber);
+            byte[] writeBytes = new byte[7];
+            writeBytes[0] = serialNumberBytes[0];
+            writeBytes[1] = serialNumberBytes[1];
+            writeBytes[2] = serialNumberBytes[2];
+            writeBytes[3] = 0x7F;
+            writeBytes[4] = 0x02;
+            writeBytes = CRC.AddCRC(writeBytes);
+
+            // Отправка данных
+            byte[] receive = DeviceCommunication.SendCommand(writeBytes, 7);
+
+            // Проверка кода операции 
+            if (receive[3] != writeBytes[3])
+            {
+                throw new Exception($"Error write serial number.");
             }
             return receive;
         }

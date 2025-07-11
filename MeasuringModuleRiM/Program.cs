@@ -9,7 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class SerialPortExample
 {
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         var serial = new SerialPort("COM5", 57600);
         serial.Handshake = Handshake.None;
@@ -57,6 +57,19 @@ public class SerialPortExample
         Console.WriteLine("phaseCOrNonPhaseIndication " + electricalIndicators.phaseCOrNonPhaseIndication);
 
         Console.WriteLine();
+
+        // Обновление серийного номера
+        // Запись серийного номера
+        Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteSerialNumber(123))}");
+        // Чтение серийного номера
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        // Проверка работы с новым серийным номером
+        timeSpan = TimeSpan.FromSeconds(kdtn.ReadWorkTimeSeconds());
+        Console.WriteLine($"WorkTime {timeSpan.Days} дней {timeSpan.Hours}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}");
+
+        // Возвращение старого значения у серийного номера
+        // Запись серийного номера
+        Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteSerialNumber(44922))}");
         // Чтение серийного номера
         Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
 

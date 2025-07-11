@@ -81,5 +81,15 @@ namespace MeasuringModuleRiM
         {
             return _kdtnParser.ReadSerialNumber(_serviceCommand.ReadSerialNumber());
         }
+
+        public byte[] WriteSerialNumber(int serialNumber)
+        {
+            byte[] data = _serviceCommand.WriteSerialNumber(serialNumber);
+            // Замена подстановка серийного номера после записи
+            byte[] newSerialNumber = BitConverter.GetBytes(serialNumber);
+            Array.Copy(newSerialNumber, 0, _serialNumber, 0, _serialNumber.Length);
+
+            return data;
+        }
     }
 }

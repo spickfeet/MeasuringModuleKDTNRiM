@@ -196,5 +196,25 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             }
             return receive;
         }
+        public byte[] RestartMeasurements(byte[] serialNumber)
+        {
+            // Формирование данных для отправки
+            byte[] writeBytes = new byte[7];
+            Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
+            writeBytes[3] = 0x71;
+            writeBytes[4] = 0x02;
+
+            writeBytes = CRC.AddCRC(writeBytes);
+
+            // Отправка данных
+            byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка кода операции
+            if (receive[3] != writeBytes[3])
+            {
+                throw new Exception("Error restarting measurements");
+            }
+            return receive;
+        }
     }
 }

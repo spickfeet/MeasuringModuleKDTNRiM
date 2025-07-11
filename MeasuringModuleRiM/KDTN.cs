@@ -184,5 +184,9 @@ namespace MeasuringModuleRiM
         {
             return _calibrationCommand.WriteCalibrationConst(_serialNumber, constPtr, constValue);
         }
+        public byte[] RestartMeasurements()
+        {
+            return _calibrationCommand.RestartMeasurements(_serialNumber);
+        }
     }
 }

@@ -168,6 +168,9 @@ public class SerialPortExample
         Console.WriteLine($"ReadCalibrationConst 9: {kdtn.ReadCalibrationConst(9)}");
         Console.WriteLine($"ReadCalibrationConst 10: {kdtn.ReadCalibrationConst(10)}");
         Console.WriteLine($"ReadCalibrationConst 11: {kdtn.ReadCalibrationConst(11)}");
+        Console.WriteLine();
+
+        Console.WriteLine($"RestartMeasurements {BitConverter.ToString(kdtn.RestartMeasurements())}");
 
 
 

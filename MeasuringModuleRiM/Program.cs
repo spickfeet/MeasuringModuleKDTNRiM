@@ -119,7 +119,21 @@ public class SerialPortExample
         Console.WriteLine($"CalibrationDate {kdtn.ReadCalibrationDate()}");
         Console.WriteLine();
 
-        // Чтение калибровочных констант.
+
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(0, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(1, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(2, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(3, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(4, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(5, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(6, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(7, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(8, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(9, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(10, 0))}");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(11, 200))}");
+        Console.WriteLine();
+
         Console.WriteLine("Чтение калибровочных констант (калибровка)");
         Console.WriteLine($"ReadCalibrationConst 0: {kdtn.ReadCalibrationConst(0)}");
         Console.WriteLine($"ReadCalibrationConst 1: {kdtn.ReadCalibrationConst(1)}");
@@ -133,6 +147,27 @@ public class SerialPortExample
         Console.WriteLine($"ReadCalibrationConst 9: {kdtn.ReadCalibrationConst(9)}");
         Console.WriteLine($"ReadCalibrationConst 10: {kdtn.ReadCalibrationConst(10)}");
         Console.WriteLine($"ReadCalibrationConst 11: {kdtn.ReadCalibrationConst(11)}");
+        Console.WriteLine();
+
+        Console.WriteLine("Сброс констант");
+        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(255, 0))}");
+        Console.WriteLine();
+
+        Console.WriteLine("Чтение калибровочных констант (калибровка)");
+        Console.WriteLine($"ReadCalibrationConst 0: {kdtn.ReadCalibrationConst(0)}");
+        Console.WriteLine($"ReadCalibrationConst 1: {kdtn.ReadCalibrationConst(1)}");
+        Console.WriteLine($"ReadCalibrationConst 2: {kdtn.ReadCalibrationConst(2)}");
+        Console.WriteLine($"ReadCalibrationConst 3: {kdtn.ReadCalibrationConst(3)}");
+        Console.WriteLine($"ReadCalibrationConst 4: {kdtn.ReadCalibrationConst(4)}");
+        Console.WriteLine($"ReadCalibrationConst 5: {kdtn.ReadCalibrationConst(5)}");
+        Console.WriteLine($"ReadCalibrationConst 6: {kdtn.ReadCalibrationConst(6)}");
+        Console.WriteLine($"ReadCalibrationConst 7: {kdtn.ReadCalibrationConst(7)}");
+        Console.WriteLine($"ReadCalibrationConst 8: {kdtn.ReadCalibrationConst(8)}");
+        Console.WriteLine($"ReadCalibrationConst 9: {kdtn.ReadCalibrationConst(9)}");
+        Console.WriteLine($"ReadCalibrationConst 10: {kdtn.ReadCalibrationConst(10)}");
+        Console.WriteLine($"ReadCalibrationConst 11: {kdtn.ReadCalibrationConst(11)}");
+
+
 
 
         kdtn.StartCommunication();

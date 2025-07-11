@@ -67,7 +67,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error write calibration date.");
+                throw new Exception($"Error writing calibration date.");
             }
             return receive;
         }

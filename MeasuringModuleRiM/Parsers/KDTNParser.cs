@@ -61,9 +61,9 @@ namespace MeasuringModuleRiM.Parsers
             int channel = data[5] & 0b0000_0111;
             channel++;
 
-            int powerLevel = (data[5] & 0b0111_0000) >> 4;
+            int powerCode = (data[5] & 0b0111_0000) >> 4;
 
-            float power = powerLevel switch
+            float power = powerCode switch
             {
                 0 => 7.8f,
                 1 => -15,

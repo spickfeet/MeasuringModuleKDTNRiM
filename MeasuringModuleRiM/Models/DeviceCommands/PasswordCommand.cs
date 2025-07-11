@@ -32,7 +32,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception("Wrong read password");
+                throw new Exception("Wrong reading password");
             }
             return receive;
         }
@@ -51,7 +51,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception("Wrong write password");
+                throw new Exception("Wrong writing password");
             }
             return receive;
         }

@@ -48,7 +48,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error getting electrical indicators. Error code: " +
+                throw new Exception($"Error reading electrical indicators. Error code: " +
                     $"{BitConverter.ToInt32(receive.Skip(5).Take(4).ToArray(), 0)}");
             }
             return receive;
@@ -70,7 +70,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 byte[] errorCodeBytes = receive.Skip(5).Take(3).ToArray();
                 Array.Resize(ref errorCodeBytes, 4);
-                throw new Exception($"Error getting serial number. Error code: {BitConverter.ToInt32(errorCodeBytes)}");
+                throw new Exception($"Error reading serial number. Error code: {BitConverter.ToInt32(errorCodeBytes)}");
             }
             return receive;
         }
@@ -102,7 +102,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error write serial number.");
+                throw new Exception($"Error writing serial number.");
             }
             return receive;
         }

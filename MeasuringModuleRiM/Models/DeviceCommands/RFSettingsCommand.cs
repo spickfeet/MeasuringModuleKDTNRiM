@@ -60,7 +60,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
         }
         /// <summary>
         /// channelNumber от 1 до 8;
-        /// Мощность излучения от 0 до 7:
+        /// Код мощности излучения от 0 до 7:
         /// 0 – [7.8 dBm]
         /// 1 – [-15 dBm]
         /// 2 – [-10 dBm]
@@ -76,13 +76,13 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="Exception"></exception>
-        public byte[] WriteRFSettings(byte[] serialNumber, int channelNumber, int power)
+        public byte[] WriteRFSettings(byte[] serialNumber, int channelNumber, int powerCode)
         {
             // Проверка входных значений
             if (channelNumber < 1 || channelNumber > 8)
-                throw new ArgumentException("Номер канала должен быть от 0 до 7");
-            if (power < 0 || power > 7)
-                throw new ArgumentException("Уровень мощности должен быть от 0 до 7");
+                throw new ArgumentException("The channel number must be from 1 to 8");
+            if (powerCode < 0 || powerCode > 7)
+                throw new ArgumentException("The power code should be from 0 to 7");
             channelNumber--;
 
             // Формирование данных для отправки
@@ -90,7 +90,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
             writeBytes[3] = 0x79;
             writeBytes[4] = 0x03;
-            writeBytes[5] = (byte)((power << 4) | channelNumber);
+            writeBytes[5] = (byte)((powerCode << 4) | channelNumber);
 
             writeBytes = CRC.AddCRC(writeBytes);
 
@@ -100,7 +100,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error write RF settings.");
+                throw new Exception($"Error writing RF settings.");
             }
             return receive;
         }

@@ -108,7 +108,7 @@ namespace MeasuringModuleRiM
 
         /// <summary>
         /// channelNumber от 1 до 8;
-        /// Мощность излучения от 0 до 7:
+        /// Код мощности излучения от 0 до 7:
         /// 0 – [7.8 dBm]
         /// 1 – [-15 dBm]
         /// 2 – [-10 dBm]
@@ -121,9 +121,9 @@ namespace MeasuringModuleRiM
         /// <param name="channelNumber"></param>
         /// <param name="power"></param>
         /// <returns></returns>
-        public byte[] WriteRFSettings(int channelNumber, int power) 
+        public byte[] WriteRFSettings(int channelNumber, int powerCode) 
         {
-            return _rfSettingsCommand.WriteRFSettings(_serialNumber, channelNumber, power);
+            return _rfSettingsCommand.WriteRFSettings(_serialNumber, channelNumber, powerCode);
         }
 
         public DateTime ReadCalibrationDate()

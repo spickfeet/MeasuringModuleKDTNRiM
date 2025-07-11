@@ -8,7 +8,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
 {
     public interface IDeviceCommunication
     {
-        byte[] SendCommand(byte[] bytesMessage, int resultLength);
+        byte[] SendCommand(byte[] bytesMessage);
         void StartCommunication();
         void StopCommunication();
     }

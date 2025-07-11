@@ -27,7 +27,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             writeBytes = CRC.AddCRC(writeBytes);
 
             // Отправка данных
-            byte[] receive = DeviceCommunication.SendCommand(writeBytes, 12);
+            byte[] receive = DeviceCommunication.SendCommand(writeBytes);
 
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
@@ -47,7 +47,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             writeBytes = CRC.AddCRC(writeBytes);
 
             // Отправка данных
-            byte[] receive = DeviceCommunication.SendCommand(writeBytes, 11);
+            byte[] receive = DeviceCommunication.SendCommand(writeBytes);
 
             // Проверка кода операции
             if (receive[3] != writeBytes[3])

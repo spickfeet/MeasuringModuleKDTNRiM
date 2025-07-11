@@ -20,12 +20,35 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
             StopCommunication();
         }
 
-        public byte[] SendCommand(byte[] bytesMessage, int resultLength)
+        public byte[] SendCommand(byte[] bytesMessage)
         {
             _serial.Write(bytesMessage, 0, bytesMessage.Length);
-            return ReceiveResult(resultLength);
+            return ReceiveResult();
         }
-        private byte[] ReceiveResult(int nbytes)
+
+        private byte[] ReceiveResult()
+        {
+            // Сначала читаем заголовок пакета (5 байт)
+            byte[] header = ReceiveFixedSize(5);
+
+            int dataLength = header[4];
+
+            // Если в пакете есть дополнительные данные, читаем их
+            if (dataLength > 0)
+            {
+                byte[] data = ReceiveFixedSize(dataLength);
+
+                // Объединяем заголовок и данные в один массив
+                byte[] packet = new byte[5 + dataLength];
+                Buffer.BlockCopy(header, 0, packet, 0, 5);
+                Buffer.BlockCopy(data, 0, packet, 5, dataLength);
+
+                return packet;
+            }
+            throw new Exception("The data packet arrived incomplete.");
+        }
+
+        private byte[] ReceiveFixedSize(int nbytes)
         {
             var buf = new byte[nbytes];
             var readPos = 0;

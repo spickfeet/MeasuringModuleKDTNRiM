@@ -17,6 +17,7 @@ namespace MeasuringModuleRiM
         private PasswordCommand _passwordCommand;
         private DeviceInformationCommand _deviceInformationCommand;
         private ServiceCommand _serviceCommand;
+        private RFSettingsCommand _rfSettingsCommand;
         private byte[] _serialNumber;
         private IDeviceCommunication _deviceCommunication;
         private KDTNParser _kdtnParser;
@@ -31,6 +32,7 @@ namespace MeasuringModuleRiM
             _passwordCommand = new(crc, deviceCommunication);
             _deviceInformationCommand = new(crc, deviceCommunication);
             _serviceCommand = new(crc, deviceCommunication);
+            _rfSettingsCommand = new(crc, deviceCommunication);
         }
         public void StartCommunication()
         {
@@ -79,7 +81,7 @@ namespace MeasuringModuleRiM
 
         public int ReadSerialNumber()
         {
-            return _kdtnParser.ReadSerialNumber(_serviceCommand.ReadSerialNumber());
+            return _kdtnParser.ParseSerialNumber(_serviceCommand.ReadSerialNumber());
         }
 
         public byte[] WriteSerialNumber(int serialNumber)
@@ -90,6 +92,11 @@ namespace MeasuringModuleRiM
             Array.Copy(newSerialNumber, 0, _serialNumber, 0, _serialNumber.Length);
 
             return data;
+        }
+
+        public float ReadRFSignalLevel()
+        {
+            return _kdtnParser.ParseRFSignalLevel(_rfSettingsCommand.ReadRFSignalLevel(_serialNumber));
         }
     }
 }

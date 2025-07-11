@@ -31,6 +31,10 @@ public class SerialPortExample
         data =  kdtn.EnterReadPassword("");
         Console.WriteLine($"Получено {data.Length} байт: {BitConverter.ToString(data)}");
 
+        // Ввод пароля для записи
+        data = kdtn.EnterWritePassword("");
+        Console.WriteLine($"Получено {data.Length} байт: {BitConverter.ToString(data)}");
+
         Console.WriteLine();
 
         // Чтение версии и типа устройства
@@ -72,6 +76,10 @@ public class SerialPortExample
         Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteSerialNumber(44922))}");
         // Чтение серийного номера
         Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+
+        Console.WriteLine();
+
+        Console.WriteLine($"RFSignalLevel {kdtn.ReadRFSignalLevel()}");
 
         kdtn.StartCommunication();
 

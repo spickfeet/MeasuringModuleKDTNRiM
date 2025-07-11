@@ -81,6 +81,14 @@ public class SerialPortExample
 
         Console.WriteLine($"RFSignalLevel {kdtn.ReadRFSignalLevel()}");
 
+        Console.WriteLine();
+
+        RFSettings rFSettings = kdtn.ReadRFSettings();
+        Console.WriteLine("ReadRFSettings");
+        Console.WriteLine($"channelNumber {rFSettings.channelNumber}");
+        Console.WriteLine($"power {rFSettings.power} dBm");
+
+
         kdtn.StartCommunication();
 
     }

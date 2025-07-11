@@ -54,5 +54,28 @@ namespace MeasuringModuleRiM.Parsers
         {
             return BitConverter.ToSingle(data.Skip(5).Take(4).ToArray(), 0);
         }
+
+        public RFSettings ParseRFSettings(byte[] data)
+        {
+            int channel = data[5] & 0b0000_0111;
+            channel++;
+
+            int powerLevel = (data[5] & 0b0111_0000) >> 4;
+
+            float power = powerLevel switch
+            {
+                0 => 7.8f,
+                1 => -15,
+                2 => -10,
+                3 => -5,
+                4 => 0,
+                5 => 5,
+                6 => 7,
+                7 => 10,
+                _ => throw new Exception("Error unknown power")
+            };
+            RFSettings rFSettings = new(channel, power);
+            return rFSettings;
+        }
     }
 }

@@ -98,5 +98,10 @@ namespace MeasuringModuleRiM
         {
             return _kdtnParser.ParseRFSignalLevel(_rfSettingsCommand.ReadRFSignalLevel(_serialNumber));
         }
+
+        public RFSettings ReadRFSettings()
+        {
+            return _kdtnParser.ParseRFSettings(_rfSettingsCommand.ReadRFSettings(_serialNumber));
+        }
     }
 }

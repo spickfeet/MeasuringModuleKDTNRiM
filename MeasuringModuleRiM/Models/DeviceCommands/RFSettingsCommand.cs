@@ -37,5 +37,25 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             }
             return receive;
         }
+
+        public byte[] ReadRFSettings(byte[] serialNumber)
+        {
+            // Формирование данных для отправки
+            byte[] writeBytes = new byte[7];
+            Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
+            writeBytes[3] = 0x78;
+            writeBytes[4] = 0x02;
+            writeBytes = CRC.AddCRC(writeBytes);
+
+            // Отправка данных
+            byte[] receive = DeviceCommunication.SendCommand(writeBytes, 8);
+
+            // Проверка кода операции 
+            if (receive[3] != writeBytes[3])
+            {
+                throw new Exception($"Error reading RF settings. Error code: {(int)receive[5]}");
+            }
+            return receive;
+        }
     }
 }

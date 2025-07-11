@@ -106,5 +106,25 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             }
             return receive;
         }
+
+        public byte[] ReadServiceParameters(byte[] serialNumber)
+        {
+            // Формирование данных для отправки
+            byte[] writeBytes = new byte[7];
+            Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
+            writeBytes[3] = 0x7E;
+            writeBytes[4] = 0x02;
+            writeBytes = CRC.AddCRC(writeBytes);
+
+            // Отправка данных
+            byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка кода операции 
+            if (receive[3] != writeBytes[3])
+            {
+                throw new Exception($"Error reading service parameters. Error code: {(int)receive[5]}");
+            }
+            return receive;
+        }
     }
 }

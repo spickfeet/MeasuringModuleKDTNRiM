@@ -90,5 +90,10 @@ namespace MeasuringModuleRiM.Parsers
                 return (int)BitConverter.ToUInt16(data.Skip(6).Take(2).ToArray(), 0);
             }
         }
+
+        public ServiceParameters ParseServiceParameters(byte[] data)
+        {
+            return new ((int)data[5] * 0.1f, (int)data[6] * 0.1f, (sbyte)data[7]);
+        }
     }
 }

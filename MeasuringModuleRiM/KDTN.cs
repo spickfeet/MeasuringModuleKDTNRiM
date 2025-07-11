@@ -188,5 +188,10 @@ namespace MeasuringModuleRiM
         {
             return _calibrationCommand.RestartMeasurements(_serialNumber);
         }
+
+        public ServiceParameters ReadServiceParameters()
+        {
+            return _kdtnParser.ParseServiceParameters(_serviceCommand.ReadServiceParameters(_serialNumber));
+        }
     }
 }

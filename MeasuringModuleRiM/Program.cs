@@ -171,7 +171,13 @@ public class SerialPortExample
         Console.WriteLine();
 
         Console.WriteLine($"RestartMeasurements {BitConverter.ToString(kdtn.RestartMeasurements())}");
+        Console.WriteLine();
 
+        ServiceParameters serviceParameters = kdtn.ReadServiceParameters();
+        Console.WriteLine("serviceParameters");
+        Console.WriteLine($"supercapacitorVoltage {serviceParameters.supercapacitorVoltage}");
+        Console.WriteLine($"supercapacitorVoltage {serviceParameters.supplyVoltage}");
+        Console.WriteLine($"supercapacitorVoltage {serviceParameters.temperature}");
 
 
 

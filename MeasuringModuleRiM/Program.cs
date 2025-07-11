@@ -80,13 +80,31 @@ public class SerialPortExample
         Console.WriteLine();
 
         Console.WriteLine($"RFSignalLevel {kdtn.ReadRFSignalLevel()}");
-
         Console.WriteLine();
 
+        // Обновление настроек RF-канала модуля
+        // Запись настроек RF-канала модуля
+        Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteRFSettings(1,0))}");
+        Console.WriteLine();
+
+        // Чтение настроек RF-канала модуля
         RFSettings rFSettings = kdtn.ReadRFSettings();
         Console.WriteLine("ReadRFSettings");
         Console.WriteLine($"channelNumber {rFSettings.channelNumber}");
         Console.WriteLine($"power {rFSettings.power} dBm");
+        Console.WriteLine();
+
+        // Возврат настроек RF-канала модуля
+        // Запись настроек RF-канала модуля
+        Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteRFSettings(1, 7))}");
+        Console.WriteLine();
+
+        // Чтение настроек RF-канала модуля
+        rFSettings = kdtn.ReadRFSettings();
+        Console.WriteLine("ReadRFSettings");
+        Console.WriteLine($"channelNumber {rFSettings.channelNumber}");
+        Console.WriteLine($"power {rFSettings.power} dBm");
+        Console.WriteLine();
 
 
         kdtn.StartCommunication();

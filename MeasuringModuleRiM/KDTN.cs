@@ -103,5 +103,27 @@ namespace MeasuringModuleRiM
         {
             return _kdtnParser.ParseRFSettings(_rfSettingsCommand.ReadRFSettings(_serialNumber));
         }
+
+
+
+        /// <summary>
+        /// channelNumber от 1 до 8;
+        /// Мощность излучения от 0 до 7:
+        /// 0 – [7.8 dBm]
+        /// 1 – [-15 dBm]
+        /// 2 – [-10 dBm]
+        /// 3 – [-5 dBm]
+        /// 4 – [0 dBm]
+        /// 5 – [5 dBm]
+        /// 6 – [7 dBm]
+        /// 7 – [10 dBm]
+        /// </summary>
+        /// <param name="channelNumber"></param>
+        /// <param name="power"></param>
+        /// <returns></returns>
+        public byte[] WriteRFSettings(int channelNumber, int power) 
+        {
+            return _rfSettingsCommand.WriteRFSettings(_serialNumber, channelNumber, power);
+        }
     }
 }

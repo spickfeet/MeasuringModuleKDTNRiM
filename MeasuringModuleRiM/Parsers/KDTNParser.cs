@@ -38,9 +38,9 @@ namespace MeasuringModuleRiM.Parsers
             return electricalIndicators;
         }
 
-        public int ParseTimeSeconds(byte[] data)
+        public uint ParseTimeSeconds(byte[] data)
         {
-            return BitConverter.ToInt32(data.Skip(5).Take(4).ToArray(), 0);
+            return BitConverter.ToUInt32(data.Skip(5).Take(4).ToArray(), 0);
         }
 
         public int ParseSerialNumber(byte[] data)

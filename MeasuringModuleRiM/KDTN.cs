@@ -126,10 +126,6 @@ namespace MeasuringModuleRiM
             return _rfSettingsCommand.WriteRFSettings(_serialNumber, channelNumber, power);
         }
 
-        public int ReadCalibrationTimeSeconds()
-        {
-            return _kdtnParser.ParseTimeSeconds(_deviceInformationCommand.ReadWorkTimeSeconds(_serialNumber));
-        }
         public DateTime ReadCalibrationDate()
         {
             TimeSpan timeSpan = TimeSpan.FromSeconds(_kdtnParser.ParseTimeSeconds(_calibrationCommand.ReadCalibrationDate(_serialNumber)));

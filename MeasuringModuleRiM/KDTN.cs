@@ -132,6 +132,7 @@ namespace MeasuringModuleRiM
             DateTime baseDate = new(2000, 1, 1);
             return baseDate.Add(timeSpan);
         }
+
         public byte[] WriteCalibrationDate(DateTime dateTime)
         {
             return _calibrationCommand.WriteCalibrationDate(_serialNumber, dateTime);
@@ -184,6 +185,7 @@ namespace MeasuringModuleRiM
         {
             return _calibrationCommand.WriteCalibrationConst(_serialNumber, constPtr, constValue);
         }
+
         public byte[] RestartMeasurements()
         {
             return _calibrationCommand.RestartMeasurements(_serialNumber);
@@ -192,6 +194,15 @@ namespace MeasuringModuleRiM
         public ServiceParameters ReadServiceParameters()
         {
             return _kdtnParser.ParseServiceParameters(_serviceCommand.ReadServiceParameters(_serialNumber));
+        }
+
+        /// <summary>
+        /// Если не истёк интервал измерения/усреднения параметров (~ 1сек.), то метод вернет null.
+        /// </summary>
+        /// <returns></returns>
+        public MeasuredValues? ReadMeasuredValues()
+        {
+            return _kdtnParser.ParseMeasuredValues(_calibrationCommand.ReadMeasuredValues(_serialNumber));
         }
     }
 }

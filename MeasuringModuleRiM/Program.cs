@@ -179,6 +179,21 @@ public class SerialPortExample
         Console.WriteLine($"supercapacitorVoltage {serviceParameters.supplyVoltage}");
         Console.WriteLine($"supercapacitorVoltage {serviceParameters.temperature}");
 
+        MeasuredValues? measuredValues = kdtn.ReadMeasuredValues();
+        if (measuredValues != null)
+        {
+            Console.WriteLine($"activePower {measuredValues.Value.activePower}");
+            Console.WriteLine($"reactivePower {measuredValues.Value.reactivePower}");
+            Console.WriteLine($"rmsVoltage {measuredValues.Value.rmsVoltage}");
+            Console.WriteLine($"rmsCurrent {measuredValues.Value.rmsCurrent}");
+            Console.WriteLine($"frequency {measuredValues.Value.frequency}");
+        }
+        else
+        {
+            Console.WriteLine("measuredValues = NULL");
+        }
+
+
 
 
         kdtn.StartCommunication();

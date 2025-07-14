@@ -19,6 +19,27 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             DeviceCommunication = deviceCommunication;
         }
 
+        public byte[] ReadMeasuredValues(byte[] serialNumber)
+        {
+            // Формирование данных для отправки
+            byte[] writeBytes = new byte[7];
+            Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
+            writeBytes[3] = 0x70;
+            writeBytes[4] = 0x02;
+            writeBytes = CRC.AddCRC(writeBytes);
+
+            // Отправка данных
+            byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка кода операции
+            if (receive[3] != writeBytes[3])
+            {
+                throw new Exception($"Error reading measured values. Error code: " +
+                    $"{(int)receive[5]}");
+            }
+            return receive;
+        }
+
         public byte[] ReadCalibrationDate(byte[] serialNumber)
         {
             // Формирование данных для отправки
@@ -35,7 +56,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             if (receive[3] != writeBytes[3])
             {
                 throw new Exception($"Error reading calibration date. Error code: " +
-                    $"{BitConverter.ToInt32(receive.Skip(5).Take(4).ToArray(), 0)}");
+                    $"{(int)receive[5]}");
             }
             return receive;
         }

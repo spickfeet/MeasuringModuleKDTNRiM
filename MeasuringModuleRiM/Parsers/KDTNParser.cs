@@ -95,5 +95,22 @@ namespace MeasuringModuleRiM.Parsers
         {
             return new ((int)data[5] * 0.1f, (int)data[6] * 0.1f, (sbyte)data[7]);
         }
+
+        public MeasuredValues? ParseMeasuredValues(byte[] data)
+        {
+            if(data.Length == 7)
+            {
+                return null;
+            }
+            
+            float activePower = BitConverter.ToInt32(data.Skip(5).Take(4).ToArray()) * 0.1f;
+            float reactivePower = BitConverter.ToInt16(data.Skip(9).Take(4).ToArray()) * 0.1f;
+
+            int rmsVoltage = BitConverter.ToInt32(data.Skip(13).Take(2).ToArray());
+            float rmsCurrent = BitConverter.ToInt32(data.Skip(15).Take(4).ToArray()) * 0.0001f;
+            float frequency = BitConverter.ToInt16(data.Skip(23).Take(2).ToArray()) * 0.01f;
+            MeasuredValues measuredValues = new MeasuredValues(activePower, reactivePower, rmsVoltage, rmsCurrent, frequency);
+            return measuredValues;
+        }
     }
 }

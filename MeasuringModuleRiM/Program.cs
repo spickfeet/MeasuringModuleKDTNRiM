@@ -11,7 +11,7 @@ public class SerialPortExample
 {
     private static void Main(string[] args)
     {
-        var serial = new SerialPort("COM5", 57600);
+        var serial = new SerialPort("COM6", 4800);
         serial.Handshake = Handshake.None;
         serial.Parity = Parity.None;
         serial.DataBits = 8;
@@ -19,7 +19,8 @@ public class SerialPortExample
         serial.ReadTimeout = 2000;
 
         ICRC crc = new ModbusCRC16();
-        IDeviceCommunication deviceCommunication = new DeviceCommunicationRS485(serial);
+        //IDeviceCommunication deviceCommunication = new DeviceCommunicationRS485(serial);
+        IDeviceCommunication deviceCommunication = new DeviceCommunicationGSM(serial, "89069965121");
 
         KDTN kdtn = new(deviceCommunication, crc, 44922);
 
@@ -28,16 +29,18 @@ public class SerialPortExample
         kdtn.StartCommunication();
 
         Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteSerialNumber(44922))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
 
-        // Ввод пароля для чтения
-        data =  kdtn.EnterReadPassword("");
+        //// Ввод пароля для чтения
+        data = kdtn.EnterReadPassword("");
         Console.WriteLine($"Получено {data.Length} байт: {BitConverter.ToString(data)}");
+
 
         // Ввод пароля для записи
         data = kdtn.EnterWritePassword("");
         Console.WriteLine($"Получено {data.Length} байт: {BitConverter.ToString(data)}");
 
-        Console.WriteLine();
+        //Console.WriteLine();
 
         // Чтение версии и типа устройства
         double versions;
@@ -64,6 +67,8 @@ public class SerialPortExample
 
         Console.WriteLine();
 
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+
         // Обновление серийного номера
         // Запись серийного номера
         Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteSerialNumber(123))}");
@@ -86,7 +91,7 @@ public class SerialPortExample
 
         // Обновление настроек RF-канала модуля
         // Запись настроек RF-канала модуля
-        Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteRFSettings(1,0))}");
+        Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteRFSettings(1, 0))}");
         Console.WriteLine();
 
         // Чтение настроек RF-канала модуля
@@ -193,10 +198,7 @@ public class SerialPortExample
             Console.WriteLine("measuredValues = NULL");
         }
 
-
-
-
-        kdtn.StartCommunication();
+        kdtn.StopCommunication();
 
     }
 }

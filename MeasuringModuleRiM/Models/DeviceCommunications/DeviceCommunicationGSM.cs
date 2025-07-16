@@ -194,7 +194,6 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
 
                 if (fullResponse.Contains(expectedResponse.ToUpper()))
                 {
-                    Console.WriteLine($"Команда '{command.Trim()}' выполнена успешно.");
                     return;
                 }
 

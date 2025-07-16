@@ -40,7 +40,7 @@ public class SerialPortExample
         data = kdtn.EnterWritePassword("");
         Console.WriteLine($"Получено {data.Length} байт: {BitConverter.ToString(data)}");
 
-        //Console.WriteLine();
+        Console.WriteLine();
 
         // Чтение версии и типа устройства
         double versions;

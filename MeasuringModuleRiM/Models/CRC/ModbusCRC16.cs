@@ -3,12 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MeasuringModuleRiM.Models.CRC
 {
     public class ModbusCRC16 : ICRC
     {
-        public byte[] AddCRC(byte[] data)
+        public void AddCRC(byte[] data)
+        {
+            (data[data.Length - 2], data[data.Length - 1]) = CalcCRC(data);
+        }
+
+        public bool CheckCRC(byte[] data)
+        {
+            byte crcByte1;
+            byte crcByte2;
+            (crcByte1, crcByte2) = CalcCRC(data);
+            if(crcByte1 == data[data.Length - 2] && crcByte2 == data[data.Length - 1]) return true;
+            return false;
+        }
+        private (byte, byte) CalcCRC(byte[] data)
         {
             ushort crc = 0xFFFF;
 
@@ -25,9 +39,7 @@ namespace MeasuringModuleRiM.Models.CRC
                         crc ^= 0xA001;
                 }
             }
-            data[data.Length - 2] = (byte)(crc & 0xFF);
-            data[data.Length - 1] = (byte)((crc >> 8) & 0xFF);
-            return data;
+            return ((byte)(crc & 0xFF), (byte)((crc >> 8) & 0xFF));
         }
     }
 }

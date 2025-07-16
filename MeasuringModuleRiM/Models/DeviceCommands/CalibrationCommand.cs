@@ -26,10 +26,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
             writeBytes[3] = 0x70;
             writeBytes[4] = 0x02;
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
@@ -46,10 +52,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
             writeBytes[3] = 0x74;
             writeBytes[4] = 0x02;
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
@@ -78,10 +90,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             byte[] calibrationDateSecondsBytes = BitConverter.GetBytes(calibrationDateSeconds);
             Array.Copy(calibrationDateSecondsBytes, 0, writeBytes, 5, calibrationDateSecondsBytes.Length);
 
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
@@ -123,10 +141,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             writeBytes[4] = 0x03;
             writeBytes[5] = (byte)constPtr;
 
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
@@ -202,10 +226,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 Array.Copy(constValueBytes, 0, writeBytes, 6, constValueBytes.Length);
             }
 
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
@@ -222,10 +252,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             writeBytes[3] = 0x71;
             writeBytes[4] = 0x02;
 
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции
             if (receive[3] != writeBytes[3])

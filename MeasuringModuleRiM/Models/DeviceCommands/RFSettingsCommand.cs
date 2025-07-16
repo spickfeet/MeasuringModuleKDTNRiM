@@ -25,10 +25,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
             writeBytes[3] = 0x6B;
             writeBytes[4] = 0x02;
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
@@ -45,10 +51,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
             writeBytes[3] = 0x78;
             writeBytes[4] = 0x02;
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
@@ -82,7 +94,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new ArgumentException("Номер канала должен быть от 1 до 8");
             if (powerCode < 0 || powerCode > 7)
                 throw new ArgumentException("Код мощности должен быть от 0 до 7");
-            channelNumber--;
+            channelNumber--; 
 
             // Формирование данных для отправки
             byte[] writeBytes = new byte[8];
@@ -91,10 +103,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             writeBytes[4] = 0x03;
             writeBytes[5] = (byte)((powerCode << 4) | channelNumber);
 
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])

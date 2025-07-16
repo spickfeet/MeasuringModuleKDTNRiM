@@ -7,11 +7,6 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
     {
         public ICRC CRC { get; private set; }
         public IDeviceCommunication DeviceCommunication { get; private set; } 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="crc"></param>
-        /// <param name="deviceCommunication"></param>
         public ServiceCommand(ICRC crc, IDeviceCommunication deviceCommunication)
         {
             CRC = crc;
@@ -40,10 +35,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             writeBytes[3] = 0x27;
             writeBytes[4] = 0x03;
             writeBytes[5] = BitConverter.GetBytes(paramType)[0];
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
@@ -59,10 +60,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             byte[] writeBytes = new byte[7];
             writeBytes[3] = 0x7F;
             writeBytes[4] = 0x02;
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
@@ -91,10 +98,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             writeBytes[2] = serialNumberBytes[2];
             writeBytes[3] = 0x7F;
             writeBytes[4] = 0x02;
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
@@ -111,10 +124,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             Array.Copy(serialNumber, 0, writeBytes, 0, serialNumber.Length);
             writeBytes[3] = 0x7E;
             writeBytes[4] = 0x02;
-            writeBytes = CRC.AddCRC(writeBytes);
+            CRC.AddCRC(writeBytes);
 
             // Отправка данных
             byte[] receive = DeviceCommunication.SendCommand(writeBytes);
+
+            // Проверка CRC
+            if (!CRC.CheckCRC(receive))
+            {
+                throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
 
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])

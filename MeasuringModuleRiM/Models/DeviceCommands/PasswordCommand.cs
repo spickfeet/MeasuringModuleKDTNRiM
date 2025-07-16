@@ -8,7 +8,7 @@ using MeasuringModuleRiM.Models.DeviceCommunications;
 
 namespace MeasuringModuleRiM.Models.DeviceCommands
 {
-    public class PasswordCommand : IDeviceCommand
+    internal class PasswordCommand : IDeviceCommand
     {
         public ICRC CRC { get; private set; }
         public IDeviceCommunication DeviceCommunication { get; private set; }

@@ -8,7 +8,7 @@ using MeasuringModuleRiM.Models.DeviceCommunications;
 
 namespace MeasuringModuleRiM.Models.DeviceCommands
 {
-    public interface IDeviceCommand
+    internal interface IDeviceCommand
     {
         ICRC CRC { get; }
         IDeviceCommunication DeviceCommunication { get; }

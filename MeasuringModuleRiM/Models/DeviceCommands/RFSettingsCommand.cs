@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MeasuringModuleRiM.Models.DeviceCommands
 {
-    public class RFSettingsCommand : IDeviceCommand
+    internal class RFSettingsCommand : IDeviceCommand
     {
         public ICRC CRC { get; private set; }
         public IDeviceCommunication DeviceCommunication { get; private set; }

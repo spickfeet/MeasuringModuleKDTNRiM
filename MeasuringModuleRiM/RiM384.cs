@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MeasuringModuleRiM
 {
-    public class KDTN
+    public class RiM384
     {
         private PasswordCommand _passwordCommand;
         private DeviceInformationCommand _deviceInformationCommand;
@@ -21,14 +21,14 @@ namespace MeasuringModuleRiM
         private CalibrationCommand _calibrationCommand;
         private byte[] _serialNumber;
         private IDeviceCommunication _deviceCommunication;
-        private KDTNParser _kdtnParser;
+        private RiM384Parser _rim384Parser;
         /// <summary>
         /// serialNumber от 0 до 16772987
         /// </summary>
         /// <param name="deviceCommunication"></param>
         /// <param name="crc"></param>
         /// <param name="serialNumber"></param>
-        public KDTN(IDeviceCommunication deviceCommunication, ICRC crc, int serialNumber)
+        public RiM384(IDeviceCommunication deviceCommunication, ICRC crc, int serialNumber)
         {
             if (serialNumber < 0 || serialNumber > 16772987)
             {
@@ -37,7 +37,7 @@ namespace MeasuringModuleRiM
             byte[] byteArray = BitConverter.GetBytes(serialNumber);
             _serialNumber = [byteArray[0], byteArray[1], byteArray[2]];
             _deviceCommunication = deviceCommunication;
-            _kdtnParser = new KDTNParser();
+            _rim384Parser = new RiM384Parser();
 
 
             _passwordCommand = new(crc, deviceCommunication);
@@ -68,12 +68,12 @@ namespace MeasuringModuleRiM
 
         public VersionAndType ReadVersionTypeAndType()
         {
-            return _kdtnParser.ParseVersionAndType(_deviceInformationCommand.ReadVersionTypeAndType(_serialNumber));
+            return _rim384Parser.ParseVersionAndType(_deviceInformationCommand.ReadVersionTypeAndType(_serialNumber));
         }
 
         public TimeSpan ReadWorkTime()
         {
-            return TimeSpan.FromSeconds(_kdtnParser.ParseTimeSeconds(_deviceInformationCommand.ReadWorkTimeSeconds(_serialNumber)));
+            return TimeSpan.FromSeconds(_rim384Parser.ParseTimeSeconds(_deviceInformationCommand.ReadWorkTimeSeconds(_serialNumber)));
         }
 
         /// <summary>
@@ -88,12 +88,12 @@ namespace MeasuringModuleRiM
         /// <returns></returns>
         public ElectricalIndicators ReadElectricalIndicators(int paramType)
         {
-            return _kdtnParser.ParseElectricalIndicators(_serviceCommand.ReadElectricalIndicators(_serialNumber, paramType));
+            return _rim384Parser.ParseElectricalIndicators(_serviceCommand.ReadElectricalIndicators(_serialNumber, paramType));
         }
 
         public int ReadSerialNumber()
         {
-            return _kdtnParser.ParseSerialNumber(_serviceCommand.ReadSerialNumber());
+            return _rim384Parser.ParseSerialNumber(_serviceCommand.ReadSerialNumber());
         }
 
         /// <summary>
@@ -114,12 +114,12 @@ namespace MeasuringModuleRiM
 
         public float ReadRFSignalLevel()
         {
-            return _kdtnParser.ParseRFSignalLevel(_rfSettingsCommand.ReadRFSignalLevel(_serialNumber));
+            return _rim384Parser.ParseRFSignalLevel(_rfSettingsCommand.ReadRFSignalLevel(_serialNumber));
         }
 
         public RFSettings ReadRFSettings()
         {
-            return _kdtnParser.ParseRFSettings(_rfSettingsCommand.ReadRFSettings(_serialNumber));
+            return _rim384Parser.ParseRFSettings(_rfSettingsCommand.ReadRFSettings(_serialNumber));
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace MeasuringModuleRiM
 
         public DateTime ReadCalibrationDate()
         {
-            TimeSpan timeSpan = TimeSpan.FromSeconds(_kdtnParser.ParseTimeSeconds(_calibrationCommand.ReadCalibrationDate(_serialNumber)));
+            TimeSpan timeSpan = TimeSpan.FromSeconds(_rim384Parser.ParseTimeSeconds(_calibrationCommand.ReadCalibrationDate(_serialNumber)));
             DateTime baseDate = new(2000, 1, 1);
             return baseDate.Add(timeSpan);
         }
@@ -174,7 +174,7 @@ namespace MeasuringModuleRiM
         /// <exception cref="Exception"></exception>
         public int ReadCalibrationConst(int constPtr)
         {
-            return _kdtnParser.ParseCalibrationConst(_calibrationCommand.ReadCalibrationConst(_serialNumber, constPtr));
+            return _rim384Parser.ParseCalibrationConst(_calibrationCommand.ReadCalibrationConst(_serialNumber, constPtr));
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace MeasuringModuleRiM
 
         public ServiceParameters ReadServiceParameters()
         {
-            return _kdtnParser.ParseServiceParameters(_serviceCommand.ReadServiceParameters(_serialNumber));
+            return _rim384Parser.ParseServiceParameters(_serviceCommand.ReadServiceParameters(_serialNumber));
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace MeasuringModuleRiM
         /// <returns></returns>
         public MeasuredValues? ReadMeasuredValues()
         {
-            return _kdtnParser.ParseMeasuredValues(_calibrationCommand.ReadMeasuredValues(_serialNumber));
+            return _rim384Parser.ParseMeasuredValues(_calibrationCommand.ReadMeasuredValues(_serialNumber));
         }
     }
 }

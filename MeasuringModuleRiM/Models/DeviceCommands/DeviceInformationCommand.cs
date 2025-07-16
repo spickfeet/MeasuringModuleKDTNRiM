@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MeasuringModuleRiM.Models.DeviceCommands
 {
-    public class DeviceInformationCommand : IDeviceCommand
+    internal class DeviceInformationCommand : IDeviceCommand
     {
         public ICRC CRC { get; private set; }
         public IDeviceCommunication DeviceCommunication { get; private set; }

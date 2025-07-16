@@ -9,7 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MeasuringModuleRiM.Models.DeviceCommands
 {
-    public class CalibrationCommand : IDeviceCommand
+    internal class CalibrationCommand : IDeviceCommand
     {
         public ICRC CRC { get; private set; }
         public IDeviceCommunication DeviceCommunication { get; private set; }

@@ -3,7 +3,7 @@ using MeasuringModuleRiM.Models.DeviceCommunications;
 
 namespace MeasuringModuleRiM.Models.DeviceCommands
 {
-    public class ServiceCommand : IDeviceCommand
+    internal class ServiceCommand : IDeviceCommand
     {
         public ICRC CRC { get; private set; }
         public IDeviceCommunication DeviceCommunication { get; private set; } 

@@ -8,7 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MeasuringModuleRiM.Parsers
 {
-    public class KDTNParser
+    internal class RiM384Parser
     {
         public VersionAndType  ParseVersionAndType(byte[] data)
         {

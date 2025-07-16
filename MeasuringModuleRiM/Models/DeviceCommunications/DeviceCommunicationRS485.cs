@@ -34,7 +34,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
             int dataLength = header[4];
 
             // Если в пакете есть дополнительные данные, читаем их
-            if (dataLength > 0)
+            if (dataLength > 1)
             {
                 byte[] data = ReceiveFixedSize(dataLength);
 

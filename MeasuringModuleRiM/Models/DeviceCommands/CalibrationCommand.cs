@@ -37,11 +37,18 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
             }
 
+            // Проверка количества байт
+            if (receive.Length != 5 + CRC.CRCLength && receive.Length != 25 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
+            }
+
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
                 throw new Exception($"Ошибка при чтении значений измеряемых величин. Код ошибки: {(int)receive[5]}.");
             }
+
             return receive;
         }
 
@@ -63,11 +70,18 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
             }
 
+            // Проверка количества байт
+            if (receive.Length != 9 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
+            }
+
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
                 throw new Exception($"Ошибка при чтении даты калибровки модуля. Код ошибки: {(int)receive[5]}.");
             }
+
             return receive;
         }
 
@@ -99,6 +113,12 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             if (!CRC.CheckCRC(receive))
             {
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
+
+            // Проверка количества байт
+            if (receive.Length != 5 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
             }
 
             // Проверка кода операции
@@ -152,11 +172,18 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
             }
 
+            // Проверка количества байт
+            if (receive.Length != 8 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
+            }
+
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
                 throw new Exception($"Ошибка при чтении калибровочной константы. Код ошибки: {(int)receive[5]}.");
             }
+
             return receive;
         }
 
@@ -237,11 +264,18 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
             }
 
+            // Проверка количества байт
+            if (receive.Length != 5 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
+            }
+
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
                 throw new Exception($"Ошибка при записи калибровочной константы. Код ошибки: {(int)receive[5]}.");
             }
+
             return receive;
         }
         public byte[] RestartMeasurements(byte[] serialNumber)
@@ -263,11 +297,18 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
             }
 
+            // Проверка количества байт
+            if (receive.Length != 5 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
+            }
+
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
                 throw new Exception($"Ошибка при чтении измеряемых величин. Код ошибки: {(int)receive[5]}.");
             }
+
             return receive;
         }
     }

@@ -46,7 +46,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
             byte[] header = ReceiveFixedSize(14);
             int dataLength = DecodeTetrad([header[12], header[13]])[0] * 2 + 2;
              
-            if (dataLength > 0)
+            if (dataLength > 5)
             {
                 byte[] data = ReceiveFixedSize(dataLength);
 

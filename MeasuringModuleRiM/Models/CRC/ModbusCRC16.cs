@@ -9,6 +9,7 @@ namespace MeasuringModuleRiM.Models.CRC
 {
     public class ModbusCRC16 : ICRC
     {
+        public int CRCLength { get; private set; } = 2;
         public void AddCRC(byte[] data)
         {
             (data[data.Length - 2], data[data.Length - 1]) = CalcCRC(data);

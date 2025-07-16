@@ -35,11 +35,18 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
             }
 
+            // Проверка количества байт
+            if (receive.Length != 10 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
+            }
+
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
                 throw new Exception($"Ошибка чтения типа устройства и версии ПО. Код ошибки: {(int)receive[5]}.");
             }
+
             return receive;
         }
         public byte[] ReadWorkTimeSeconds(byte[] serialNumber)
@@ -58,6 +65,12 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             if (!CRC.CheckCRC(receive))
             {
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
+
+            // Проверка количества байт
+            if (receive.Length != 9 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
             }
 
             // Проверка кода операции

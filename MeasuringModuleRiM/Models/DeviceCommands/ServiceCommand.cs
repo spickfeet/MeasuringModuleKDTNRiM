@@ -46,6 +46,12 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
             }
 
+            // Проверка количества байт
+            if (receive.Length != 22 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
+            }
+
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
@@ -69,6 +75,12 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             if (!CRC.CheckCRC(receive))
             {
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
+
+            // Проверка количества байт
+            if (receive.Length != 8 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
             }
 
             // Проверка кода операции 
@@ -109,6 +121,12 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
             }
 
+            // Проверка количества байт
+            if (receive.Length != 5 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
+            }
+
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
@@ -133,6 +151,12 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             if (!CRC.CheckCRC(receive))
             {
                 throw new Exception($"Некорректная контрольная сумма полученного пакета. Пакет {BitConverter.ToString(receive)}");
+            }
+
+            // Проверка количества байт
+            if (receive.Length != 8 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
+            {
+                throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
             }
 
             // Проверка кода операции 

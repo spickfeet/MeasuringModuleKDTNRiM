@@ -28,7 +28,7 @@ public class SerialPortExample
         
         kdtn.StartCommunication();
 
-        Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteSerialNumber(44922))}");
+        //Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteSerialNumber(44922))}");
         Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
 
         //// Ввод пароля для чтения

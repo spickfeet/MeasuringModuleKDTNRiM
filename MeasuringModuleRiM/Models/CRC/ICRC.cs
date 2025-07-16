@@ -8,6 +8,7 @@ namespace MeasuringModuleRiM.Models.CRC
 {
     public interface ICRC
     {
+        int CRCLength { get; }
         void AddCRC(byte[] data);
         bool CheckCRC(byte[] data);
     }

@@ -34,8 +34,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error reading measured values. Error code: " +
-                    $"{(int)receive[5]}");
+                throw new Exception($"Ошибка при чтении значений измеряемых величин. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -55,8 +54,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error reading calibration date. Error code: " +
-                    $"{(int)receive[5]}");
+                throw new Exception($"Ошибка при чтении даты калибровки модуля. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -65,7 +63,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
         {
             if(date.Year < 2000)
             {
-                throw new ArgumentException("Error year must be later than 2000");
+                throw new ArgumentException("Год должен быть позже 2000.");
             }
 
             // Формирование данных для отправки
@@ -88,7 +86,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error writing calibration date.");
+                throw new Exception($"Ошибка при записи даты калибровки модуля. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -116,7 +114,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // 254 и 255 тоже исключены
             if (constPtr < 0 || constPtr > 11)
             {
-                throw new ArgumentException("Error unknown const pointer");
+                throw new ArgumentException("Неизвестный указатель калибровочной константы.");
             }
             // Формирование данных для отправки
             byte[] writeBytes = new byte[8];
@@ -133,8 +131,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error reading calibration const. Error code: " +
-                    $"{(int)receive[5]}");
+                throw new Exception($"Ошибка при чтении калибровочной константы. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -164,7 +161,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
 
             if (constPtr < 0 || (constPtr > 11 && constPtr != 254 && constPtr != 255))
             {
-                throw new ArgumentException("Error unknown const pointer");
+                throw new ArgumentException("Неизвестный указатель калибровочной константы.");
             }
             // Формирование данных для отправки
             byte[] writeBytes = new byte[10];
@@ -178,7 +175,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 if(constValue < -32768 || constValue > 32767)
                 {
-                    throw new ArgumentException($"The value of the constant at pointer {constPtr} is in the range from -32768 to 32767");
+                    throw new ArgumentException($"Значение константы по указателю {constPtr} находится в диапазоне от -32768 до 32767.");
                 }
                 constValueBytes = BitConverter.GetBytes((short)constValue);
                 Array.Copy(constValueBytes, 0, writeBytes, 6, constValueBytes.Length);
@@ -187,19 +184,19 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 if (constPtr == 254 || constPtr == 255 && (constValue != 0))
                 {
-                    throw new ArgumentException($"The value of the constant at pointer {constPtr} must be written only 0");
+                    throw new ArgumentException($"Значение константы по указателю {constPtr} должно быть записано только как 0.");
                 }
                 if (constPtr == 4 && (constValue < 0 || constValue > 255))
                 {
-                    throw new ArgumentException($"The value of the constant at pointer {constPtr} is in the range from 0 to 255");
+                    throw new ArgumentException($"Значение константы по указателю {constPtr} находится в диапазоне от 0 до 255.");
                 }
                 if (constPtr == 11 && constValue != 65535 && (constValue < 200 || constValue > 5000))
                 {
-                    throw new ArgumentException($"The value of the constant at pointed {constPtr} is in the range from 200 to 5000 or equal to 65535");
+                    throw new ArgumentException($"Значение константы по указателю {constPtr} находится в диапазоне от 200 до 5000 или равно 65535.");
                 }
                 if (constValue < 0 || constValue > 65535)
                 {
-                    throw new ArgumentException($"The value of the constant at pointer {constPtr} is in the range from 0 to 65535");
+                    throw new ArgumentException($"Значение константы по указателю {constPtr} находится в диапазоне от 0 до 65535.");
                 }
                 constValueBytes = BitConverter.GetBytes((ushort)constValue);
                 Array.Copy(constValueBytes, 0, writeBytes, 6, constValueBytes.Length);
@@ -213,7 +210,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error writing calibration const.");
+                throw new Exception($"Ошибка при записи калибровочной константы. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -233,7 +230,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception("Error restarting measurements");
+                throw new Exception($"Ошибка при чтении измеряемых величин. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }

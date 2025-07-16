@@ -33,8 +33,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception("Error reading RF interface signal level. Error code: " +
-                    $"{BitConverter.ToInt32(receive.Skip(5).Take(4).ToArray(), 0)}");
+                throw new Exception($"Ошибка чтения уровня сигнала RF-интерфейса. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -54,7 +53,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error reading RF settings. Error code: {(int)receive[5]}");
+                throw new Exception($"Ошибка чтения настроек RF-канала модуля. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -80,9 +79,9 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
         {
             // Проверка входных значений
             if (channelNumber < 1 || channelNumber > 8)
-                throw new ArgumentException("The channel number must be from 1 to 8");
+                throw new ArgumentException("Номер канала должен быть от 1 до 8");
             if (powerCode < 0 || powerCode > 7)
-                throw new ArgumentException("The power code should be from 0 to 7");
+                throw new ArgumentException("Код мощности должен быть от 0 до 7");
             channelNumber--;
 
             // Формирование данных для отправки
@@ -100,7 +99,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error writing RF settings.");
+                throw new Exception($"Ошибка записи настроек RF-канала модуля. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }

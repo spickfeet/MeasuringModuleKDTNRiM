@@ -31,7 +31,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
         {
             if(paramType != 0 && paramType != 1 && paramType != 4 && paramType != 5 && paramType != 6)
             {
-                throw new ArgumentException($"Error {paramType} unknown parameter type");
+                throw new ArgumentException($"Ошибка {paramType} неизвестный тип параметра");
             }
 
             // Формирование данных для отправки
@@ -48,8 +48,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error reading electrical indicators. Error code: " +
-                    $"{BitConverter.ToInt32(receive.Skip(5).Take(4).ToArray(), 0)}");
+                throw new Exception($"Ошибка чтения электрических показателей. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -68,9 +67,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                byte[] errorCodeBytes = receive.Skip(5).Take(3).ToArray();
-                Array.Resize(ref errorCodeBytes, 4);
-                throw new Exception($"Error reading serial number. Error code: {BitConverter.ToInt32(errorCodeBytes)}");
+                throw new Exception($"Ошибка чтения серийного номера модуля. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -84,7 +81,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
         {
             if(serialNumber < 0 || serialNumber > 16777215)
             {
-                throw new ArgumentException("Error serial number must be between 0 and 16777215");
+                throw new ArgumentException("Серийный номер ошибки должен быть от 0 до 16777215");
             }
             // Формирование данных для отправки
             byte[] serialNumberBytes = BitConverter.GetBytes(serialNumber);
@@ -102,7 +99,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error writing serial number.");
+                throw new Exception($"Ошибка записи серийного номера модуля. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -122,7 +119,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error reading service parameters. Error code: {(int)receive[5]}");
+                throw new Exception($"Ошибка чтения служебных параметров. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }

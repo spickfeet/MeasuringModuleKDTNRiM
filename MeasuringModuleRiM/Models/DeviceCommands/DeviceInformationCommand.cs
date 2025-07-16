@@ -32,8 +32,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error reading device type and software version. Error code: " +
-                    $"{(int)receive[5]}");
+                throw new Exception($"Ошибка чтения типа устройства и версии ПО. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -52,8 +51,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception($"Error reading work time. Error code: " +
-                    $"{(int)receive[5]}");
+                throw new Exception($"Ошибка чтения счётчика наработки. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }

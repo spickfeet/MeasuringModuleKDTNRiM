@@ -45,7 +45,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
 
                 return packet;
             }
-            throw new Exception("The data packet arrived incomplete.");
+            throw new Exception("Пакет данных получен неполным.");
         }
 
         private byte[] ReceiveFixedSize(int nbytes)

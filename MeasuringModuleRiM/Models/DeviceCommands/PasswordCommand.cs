@@ -32,7 +32,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception("Wrong reading password");
+                throw new Exception($"Ошибка при вводе пароля для чтения пароля. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }
@@ -51,7 +51,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
-                throw new Exception("Wrong writing password");
+                throw new Exception($"Ошибка при вводе пароля для записи пароля. Код ошибки: {(int)receive[5]}.");
             }
             return receive;
         }

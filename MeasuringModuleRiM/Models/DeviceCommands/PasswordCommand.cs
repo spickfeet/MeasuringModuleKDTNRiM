@@ -41,6 +41,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
             }
 
+            // Проверка адреса устройства
+            int sendSerialNumber = BitConverter.ToInt32(new byte[] { writeBytes[0], writeBytes[1], writeBytes[2], 0 }, 0);
+            int receiveSerialNumber = BitConverter.ToInt32(new byte[] { receive[0], receive[1], receive[2], 0 }, 0);
+
+            if (sendSerialNumber != receiveSerialNumber)
+            {
+                throw new Exception($"Адрес устройства {receiveSerialNumber} " +
+                    $"не соответствует ожидаемому {sendSerialNumber}");
+            }
+
             // Проверка кода операции 
             if (receive[3] != writeBytes[3])
             {
@@ -70,6 +80,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             if (receive.Length != 5 + CRC.CRCLength && receive.Length != 6 + CRC.CRCLength)
             {
                 throw new Exception($"Количество полученных байт не соответствует ожидаемому.");
+            }
+
+            // Проверка адреса устройства
+            int sendSerialNumber = BitConverter.ToInt32(new byte[] { writeBytes[0], writeBytes[1], writeBytes[2], 0 }, 0);
+            int receiveSerialNumber = BitConverter.ToInt32(new byte[] { receive[0], receive[1], receive[2], 0 }, 0);
+
+            if (sendSerialNumber != receiveSerialNumber)
+            {
+                throw new Exception($"Адрес устройства {receiveSerialNumber} " +
+                    $"не соответствует ожидаемому {sendSerialNumber}");
             }
 
             // Проверка кода операции 

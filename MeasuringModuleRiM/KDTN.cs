@@ -22,8 +22,18 @@ namespace MeasuringModuleRiM
         private byte[] _serialNumber;
         private IDeviceCommunication _deviceCommunication;
         private KDTNParser _kdtnParser;
+        /// <summary>
+        /// serialNumber от 0 до 16772987
+        /// </summary>
+        /// <param name="deviceCommunication"></param>
+        /// <param name="crc"></param>
+        /// <param name="serialNumber"></param>
         public KDTN(IDeviceCommunication deviceCommunication, ICRC crc, int serialNumber)
         {
+            if (serialNumber < 0 || serialNumber > 16772987)
+            {
+                throw new ArgumentException("Серийный номер должен быть от 0 до 16772987");
+            }
             byte[] byteArray = BitConverter.GetBytes(serialNumber);
             _serialNumber = [byteArray[0], byteArray[1], byteArray[2]];
             _deviceCommunication = deviceCommunication;
@@ -86,6 +96,12 @@ namespace MeasuringModuleRiM
             return _kdtnParser.ParseSerialNumber(_serviceCommand.ReadSerialNumber());
         }
 
+        /// <summary>
+        /// Изменить серийный номер на значение от 0 до 16772987
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public byte[] WriteSerialNumber(int serialNumber)
         {
             byte[] data = _serviceCommand.WriteSerialNumber(serialNumber);

@@ -25,10 +25,11 @@ public class SerialPortExample
         KDTN kdtn = new(deviceCommunication, crc, 44922);
 
         byte[] data;
-        
+
         kdtn.StartCommunication();
 
-        //Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteSerialNumber(44922))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteSerialNumber(44922))}");
         Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
 
         //// Ввод пароля для чтения
@@ -91,7 +92,7 @@ public class SerialPortExample
 
         // Обновление настроек RF-канала модуля
         // Запись настроек RF-канала модуля
-        Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteRFSettings(1, 0))}");
+        Console.WriteLine($"WriteRFSettings {BitConverter.ToString(kdtn.WriteRFSettings(1, 0))}");
         Console.WriteLine();
 
         // Чтение настроек RF-канала модуля
@@ -103,7 +104,7 @@ public class SerialPortExample
 
         // Возврат настроек RF-канала модуля
         // Запись настроек RF-канала модуля
-        Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(kdtn.WriteRFSettings(1, 7))}");
+        Console.WriteLine($"WriteRFSettings {BitConverter.ToString(kdtn.WriteRFSettings(1, 7))}");
         Console.WriteLine();
 
         // Чтение настроек RF-канала модуля
@@ -126,64 +127,103 @@ public class SerialPortExample
         Console.WriteLine($"CalibrationDate {kdtn.ReadCalibrationDate()}");
         Console.WriteLine();
 
-
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(0, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(1, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(2, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(3, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(4, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(5, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(6, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(7, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(8, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(9, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(10, 0))}");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(11, 200))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(0, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(1, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(2, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(3, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(4, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(5, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(6, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(7, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(8, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(9, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(10, 0))}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(11, 200))}");
         Console.WriteLine();
 
         Console.WriteLine("Чтение калибровочных констант (калибровка)");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 0: {kdtn.ReadCalibrationConst(0)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 1: {kdtn.ReadCalibrationConst(1)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 2: {kdtn.ReadCalibrationConst(2)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 3: {kdtn.ReadCalibrationConst(3)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 4: {kdtn.ReadCalibrationConst(4)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 5: {kdtn.ReadCalibrationConst(5)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 6: {kdtn.ReadCalibrationConst(6)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 7: {kdtn.ReadCalibrationConst(7)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 8: {kdtn.ReadCalibrationConst(8)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 9: {kdtn.ReadCalibrationConst(9)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 10: {kdtn.ReadCalibrationConst(10)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 11: {kdtn.ReadCalibrationConst(11)}");
         Console.WriteLine();
 
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine("Сброс констант");
-        Console.WriteLine($"WriteCalibrationDate {BitConverter.ToString(kdtn.WriteCalibrationConst(255, 0))}");
+        Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(kdtn.WriteCalibrationConst(255, 0))}");
         Console.WriteLine();
 
         Console.WriteLine("Чтение калибровочных констант (калибровка)");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 0: {kdtn.ReadCalibrationConst(0)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 1: {kdtn.ReadCalibrationConst(1)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 2: {kdtn.ReadCalibrationConst(2)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 3: {kdtn.ReadCalibrationConst(3)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 4: {kdtn.ReadCalibrationConst(4)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 5: {kdtn.ReadCalibrationConst(5)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 6: {kdtn.ReadCalibrationConst(6)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 7: {kdtn.ReadCalibrationConst(7)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 8: {kdtn.ReadCalibrationConst(8)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 9: {kdtn.ReadCalibrationConst(9)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 10: {kdtn.ReadCalibrationConst(10)}");
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"ReadCalibrationConst 11: {kdtn.ReadCalibrationConst(11)}");
         Console.WriteLine();
 
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         Console.WriteLine($"RestartMeasurements {BitConverter.ToString(kdtn.RestartMeasurements())}");
         Console.WriteLine();
 
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         ServiceParameters serviceParameters = kdtn.ReadServiceParameters();
         Console.WriteLine("serviceParameters");
         Console.WriteLine($"supercapacitorVoltage {serviceParameters.supercapacitorVoltage}");
         Console.WriteLine($"supercapacitorVoltage {serviceParameters.supplyVoltage}");
         Console.WriteLine($"supercapacitorVoltage {serviceParameters.temperature}");
 
+        Console.WriteLine($"SerialNumber {kdtn.ReadSerialNumber()}");
         MeasuredValues? measuredValues = kdtn.ReadMeasuredValues();
         if (measuredValues != null)
         {

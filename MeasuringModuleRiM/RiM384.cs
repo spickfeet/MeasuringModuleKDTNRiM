@@ -1,4 +1,5 @@
-﻿using MeasuringModuleRiM.Models.CRC;
+﻿using MeasuringModuleRiM.Exceptions;
+using MeasuringModuleRiM.Models.CRC;
 using MeasuringModuleRiM.Models.Data;
 using MeasuringModuleRiM.Models.DeviceCommands;
 using MeasuringModuleRiM.Models.DeviceCommunications;
@@ -30,50 +31,99 @@ namespace MeasuringModuleRiM
         /// <param name="serialNumber"></param>
         public RiM384(IDeviceCommunication deviceCommunication, ICRC crc, int serialNumber)
         {
-            if (serialNumber < 0 || serialNumber > 16772987)
+            try
             {
-                throw new ArgumentException("Серийный номер должен быть от 0 до 16772987");
+                if (serialNumber < 0 || serialNumber > 16772987)
+                {
+                    throw new ArgumentException("Серийный номер должен быть от 0 до 16772987");
+                }
+                byte[] byteArray = BitConverter.GetBytes(serialNumber);
+                _serialNumber = [byteArray[0], byteArray[1], byteArray[2]];
+                _deviceCommunication = deviceCommunication;
+                _rim384Parser = new RiM384Parser();
+
+
+                _passwordCommand = new(crc, deviceCommunication);
+                _deviceInformationCommand = new(crc, deviceCommunication);
+                _serviceCommand = new(crc, deviceCommunication);
+                _rfSettingsCommand = new(crc, deviceCommunication);
+                _calibrationCommand = new(crc, deviceCommunication);
             }
-            byte[] byteArray = BitConverter.GetBytes(serialNumber);
-            _serialNumber = [byteArray[0], byteArray[1], byteArray[2]];
-            _deviceCommunication = deviceCommunication;
-            _rim384Parser = new RiM384Parser();
-
-
-            _passwordCommand = new(crc, deviceCommunication);
-            _deviceInformationCommand = new(crc, deviceCommunication);
-            _serviceCommand = new(crc, deviceCommunication);
-            _rfSettingsCommand = new(crc, deviceCommunication);
-            _calibrationCommand = new(crc, deviceCommunication);
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
         public void StartCommunication()
         {
-            _deviceCommunication.StartCommunication();
+            try
+            {
+                _deviceCommunication.StartCommunication();
+            }
+            catch (Exception e) 
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public void StopCommunication()
         {
-            _deviceCommunication.StopCommunication();
+            try
+            {
+                _deviceCommunication.StopCommunication();
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public byte[] EnterReadPassword(string password) 
         {
-            return _passwordCommand.EnterReadPassword(_serialNumber, password);
+            try
+            {
+                return _passwordCommand.EnterReadPassword(_serialNumber, password);
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public byte[] EnterWritePassword(string password)
         {
-            return _passwordCommand.EnterWritePassword(_serialNumber, password);
+            try
+            {
+                return _passwordCommand.EnterWritePassword(_serialNumber, password);
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public VersionAndType ReadVersionTypeAndType()
         {
-            return _rim384Parser.ParseVersionAndType(_deviceInformationCommand.ReadVersionTypeAndType(_serialNumber));
+            try
+            {
+                return _rim384Parser.ParseVersionAndType(_deviceInformationCommand.ReadVersionTypeAndType(_serialNumber));
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public TimeSpan ReadWorkTime()
         {
-            return TimeSpan.FromSeconds(_rim384Parser.ParseTimeSeconds(_deviceInformationCommand.ReadWorkTimeSeconds(_serialNumber)));
+            try
+            {
+                return TimeSpan.FromSeconds(_rim384Parser.ParseTimeSeconds(_deviceInformationCommand.ReadWorkTimeSeconds(_serialNumber)));
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -88,7 +138,14 @@ namespace MeasuringModuleRiM
         /// <returns></returns>
         public ElectricalIndicators ReadElectricalIndicators(int paramType)
         {
-            return _rim384Parser.ParseElectricalIndicators(_serviceCommand.ReadElectricalIndicators(_serialNumber, paramType));
+            try
+            {
+                return _rim384Parser.ParseElectricalIndicators(_serviceCommand.ReadElectricalIndicators(_serialNumber, paramType));
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public int ReadSerialNumber()
@@ -104,17 +161,31 @@ namespace MeasuringModuleRiM
         /// <exception cref="Exception"></exception>
         public byte[] WriteSerialNumber(int serialNumber)
         {
-            byte[] data = _serviceCommand.WriteSerialNumber(serialNumber);
-            // Замена подстановка серийного номера после записи
-            byte[] newSerialNumber = BitConverter.GetBytes(serialNumber);
-            Array.Copy(newSerialNumber, 0, _serialNumber, 0, _serialNumber.Length);
+            try
+            {
+                byte[] data = _serviceCommand.WriteSerialNumber(serialNumber);
+                // Замена подстановка серийного номера после записи
+                byte[] newSerialNumber = BitConverter.GetBytes(serialNumber);
+                Array.Copy(newSerialNumber, 0, _serialNumber, 0, _serialNumber.Length);
 
-            return data;
+                return data;
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public float ReadRFSignalLevel()
         {
-            return _rim384Parser.ParseRFSignalLevel(_rfSettingsCommand.ReadRFSignalLevel(_serialNumber));
+            try
+            {
+                return _rim384Parser.ParseRFSignalLevel(_rfSettingsCommand.ReadRFSignalLevel(_serialNumber));
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public RFSettings ReadRFSettings()
@@ -139,19 +210,40 @@ namespace MeasuringModuleRiM
         /// <returns></returns>
         public byte[] WriteRFSettings(int channelNumber, int powerCode) 
         {
-            return _rfSettingsCommand.WriteRFSettings(_serialNumber, channelNumber, powerCode);
+            try
+            {
+                return _rfSettingsCommand.WriteRFSettings(_serialNumber, channelNumber, powerCode);
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public DateTime ReadCalibrationDate()
         {
-            TimeSpan timeSpan = TimeSpan.FromSeconds(_rim384Parser.ParseTimeSeconds(_calibrationCommand.ReadCalibrationDate(_serialNumber)));
-            DateTime baseDate = new(2000, 1, 1);
-            return baseDate.Add(timeSpan);
+            try
+            {
+                TimeSpan timeSpan = TimeSpan.FromSeconds(_rim384Parser.ParseTimeSeconds(_calibrationCommand.ReadCalibrationDate(_serialNumber)));
+                DateTime baseDate = new(2000, 1, 1);
+                return baseDate.Add(timeSpan);
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public byte[] WriteCalibrationDate(DateTime dateTime)
         {
-            return _calibrationCommand.WriteCalibrationDate(_serialNumber, dateTime);
+            try
+            {
+                return _calibrationCommand.WriteCalibrationDate(_serialNumber, dateTime);
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -174,7 +266,14 @@ namespace MeasuringModuleRiM
         /// <exception cref="Exception"></exception>
         public int ReadCalibrationConst(int constPtr)
         {
-            return _rim384Parser.ParseCalibrationConst(_calibrationCommand.ReadCalibrationConst(_serialNumber, constPtr));
+            try
+            {
+                return _rim384Parser.ParseCalibrationConst(_calibrationCommand.ReadCalibrationConst(_serialNumber, constPtr));
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -199,17 +298,38 @@ namespace MeasuringModuleRiM
         /// <exception cref="Exception"></exception>
         public byte[] WriteCalibrationConst(int constPtr, int constValue)
         {
-            return _calibrationCommand.WriteCalibrationConst(_serialNumber, constPtr, constValue);
+            try
+            {
+                return _calibrationCommand.WriteCalibrationConst(_serialNumber, constPtr, constValue);
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public byte[] RestartMeasurements()
         {
-            return _calibrationCommand.RestartMeasurements(_serialNumber);
+            try
+            {
+                return _calibrationCommand.RestartMeasurements(_serialNumber);
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         public ServiceParameters ReadServiceParameters()
         {
-            return _rim384Parser.ParseServiceParameters(_serviceCommand.ReadServiceParameters(_serialNumber));
+            try
+            {
+                return _rim384Parser.ParseServiceParameters(_serviceCommand.ReadServiceParameters(_serialNumber));
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -218,7 +338,14 @@ namespace MeasuringModuleRiM
         /// <returns></returns>
         public MeasuredValues? ReadMeasuredValues()
         {
-            return _rim384Parser.ParseMeasuredValues(_calibrationCommand.ReadMeasuredValues(_serialNumber));
+            try
+            {
+                return _rim384Parser.ParseMeasuredValues(_calibrationCommand.ReadMeasuredValues(_serialNumber));
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
         }
     }
 }

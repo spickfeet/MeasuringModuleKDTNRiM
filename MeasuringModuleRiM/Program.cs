@@ -11,22 +11,56 @@ public class SerialPortExample
 {
     private static void Main(string[] args)
     {
-        var serial = new SerialPort("COM6", 4800);
-        serial.Handshake = Handshake.None;
-        serial.Parity = Parity.None;
-        serial.DataBits = 8;
-        serial.StopBits = StopBits.One;
-        serial.ReadTimeout = 2000;
+        RiM384 rim384;
+        while (true)
+        {
+            Console.WriteLine("Команды");
+            Console.WriteLine("1 - GSM");
+            Console.WriteLine("2 - RS-485");
+            Console.Write("Команда: ");
+            int protocolCode = int.Parse(Console.ReadLine());
 
-        ICRC crc = new ModbusCRC16();
-        //IDeviceCommunication deviceCommunication = new DeviceCommunicationRS485(serial);
-        IDeviceCommunication deviceCommunication = new DeviceCommunicationGSM(serial, "89069965121");
+            if (protocolCode == 1)
+            {
+                var serial = new SerialPort("COM6", 4800);
+                serial.Handshake = Handshake.None;
+                serial.Parity = Parity.None;
+                serial.DataBits = 8;
+                serial.StopBits = StopBits.One;
+                serial.ReadTimeout = 4000;
 
-        RiM384 rim384 = new(deviceCommunication, crc, 44922);
+                ICRC crc = new ModbusCRC16();
+                IDeviceCommunication deviceCommunication = new DeviceCommunicationGSM(serial, "89069965121");
+
+                rim384 = new(deviceCommunication, crc, 44922);
+                break;
+            }
+            else if (protocolCode == 2)
+            {
+                var serial = new SerialPort("COM5", 57600);
+                serial.Handshake = Handshake.None;
+                serial.Parity = Parity.None;
+                serial.DataBits = 8;
+                serial.StopBits = StopBits.One;
+                serial.ReadTimeout = 2000;
+
+                ICRC crc = new ModbusCRC16();
+                IDeviceCommunication deviceCommunication = new DeviceCommunicationRS485(serial);
+
+                rim384 = new(deviceCommunication, crc, 44922);
+                break;
+            }
+            else
+            {
+                continue;
+            }
+        }
 
         byte[] data;
 
+        Console.WriteLine("Подключение");
         rim384.StartCommunication();
+        Console.WriteLine("Успешно");
 
         Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
         Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(44922))}");

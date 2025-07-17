@@ -196,5 +196,18 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             }
             return receive;
         }
+
+        /// <summary>
+        /// Заглушка т.к. результат команды не соответствует документации
+        /// Send: 7A AF 00 08 02 5A DF
+        /// Результат:
+        /// Receive: 7A AF 00 08 03 60 5E 83
+        /// Ожидание: Счетчик байт(07H) Статус(1 байт), Время в секундах от 01.01.2000 (4 байта), CRC(2 байта)
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        public void ReadCurrentTimeValue(byte[] serialNumber)
+        {
+            return;
+        }
     }
 }

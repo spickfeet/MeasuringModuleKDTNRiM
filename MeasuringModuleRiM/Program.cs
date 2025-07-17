@@ -274,6 +274,9 @@ public class SerialPortExample
             {
                 Console.WriteLine("measuredValues = NULL");
             }
+
+            // Заглушка
+            rim384.ReadCurrentTimeValue();
         }
         catch (RiM384Exception ex)
         {

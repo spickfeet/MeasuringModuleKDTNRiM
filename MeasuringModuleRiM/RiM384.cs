@@ -350,5 +350,25 @@ namespace MeasuringModuleRiM
                 throw new RiM384Exception(e.Message);
             }
         }
+
+        /// <summary>
+        /// Заглушка т.к. результат команды не соответствует документации
+        /// Send: 7A AF 00 08 02 5A DF
+        /// Результат:
+        /// Receive: 7A AF 00 08 03 60 5E 83
+        /// Ожидание: Счетчик байт(07H) Статус(1 байт), Время в секундах от 01.01.2000 (4 байта), CRC(2 байта)
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        public void ReadCurrentTimeValue()
+        {
+            try
+            {
+                _serviceCommand.ReadCurrentTimeValue(_serialNumber);
+            }
+            catch (Exception e)
+            {
+                throw new RiM384Exception(e.Message);
+            }
+        }
     }
 }

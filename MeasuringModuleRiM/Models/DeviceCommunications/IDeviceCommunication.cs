@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MeasuringModuleRiM.Models.DeviceCommunications
 {
-    public interface IDeviceCommunication
+    public interface IDeviceCommunication : IDisposable
     {
         byte[] SendCommand(byte[] bytesMessage);
         void StartCommunication();

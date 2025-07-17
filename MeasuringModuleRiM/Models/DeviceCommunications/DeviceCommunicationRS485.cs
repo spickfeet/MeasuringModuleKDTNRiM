@@ -17,7 +17,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
 
         ~DeviceCommunicationRS485()
         {
-            StopCommunication();
+            Dispose();
         }
 
         public byte[] SendCommand(byte[] bytesMessage)
@@ -71,6 +71,11 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
         {
             if (_serial.IsOpen)
                 _serial.Close();
+        }
+
+        public void Dispose()
+        {
+            StopCommunication();
         }
     }
 }

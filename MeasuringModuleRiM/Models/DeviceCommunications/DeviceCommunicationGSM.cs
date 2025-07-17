@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MeasuringModuleRiM.Models.DeviceCommunications
 {
-    public class DeviceCommunicationGSM : IDeviceCommunication, IDisposable
+    public class DeviceCommunicationGSM : IDeviceCommunication
     {
         private SerialPort _serial;
         private string _phoneNumber;

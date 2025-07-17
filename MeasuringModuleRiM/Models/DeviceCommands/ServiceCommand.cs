@@ -111,16 +111,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             return receive;
         }
         /// <summary>
-        /// Изменить серийный номер на значение от 0 до 16772987
+        /// Изменить серийный номер на значение от 0 до 16777215
         /// </summary>
         /// <param name="serialNumber"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         public byte[] WriteSerialNumber(int serialNumber)
         {
-            if(serialNumber < 0 || serialNumber > 16772987)
+            if(serialNumber < 0 || serialNumber > 16777215)
             {
-                throw new ArgumentException("Серийный номер должен быть от 0 до 16772987");
+                throw new ArgumentException("Серийный номер должен быть от 0 до 16777215");
             }
             // Формирование данных для отправки
             byte[] serialNumberBytes = BitConverter.GetBytes(serialNumber);

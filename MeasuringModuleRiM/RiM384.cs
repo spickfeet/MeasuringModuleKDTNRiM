@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace MeasuringModuleRiM
 {
+    /// <summary>
+    /// Исключения бросаемые данной библиотекой это RiM384Exception
+    /// </summary>
     public class RiM384
     {
         private PasswordCommand _passwordCommand;
@@ -24,7 +27,7 @@ namespace MeasuringModuleRiM
         private IDeviceCommunication _deviceCommunication;
         private RiM384Parser _rim384Parser;
         /// <summary>
-        /// serialNumber от 0 до 16772987
+        /// serialNumber от 0 до 16777215
         /// </summary>
         /// <param name="deviceCommunication"></param>
         /// <param name="crc"></param>
@@ -33,7 +36,7 @@ namespace MeasuringModuleRiM
         {
             try
             {
-                if (serialNumber < 0 || serialNumber > 16772987)
+                if (serialNumber < 0 || serialNumber > 16777215)
                 {
                     throw new ArgumentException("Серийный номер должен быть от 0 до 16772987");
                 }
@@ -154,7 +157,7 @@ namespace MeasuringModuleRiM
         }
 
         /// <summary>
-        /// Изменить серийный номер на значение от 0 до 16772987
+        /// Изменить серийный номер на значение от 0 до 16777215
         /// </summary>
         /// <param name="serialNumber"></param>
         /// <returns></returns>

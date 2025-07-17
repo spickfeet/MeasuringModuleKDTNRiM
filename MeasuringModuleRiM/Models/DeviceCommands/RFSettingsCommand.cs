@@ -18,7 +18,13 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             CRC = crc;
             DeviceCommunication = deviceCommunication;
         }
-        public byte[] ReadRFSignalLevel(byte[] serialNumber)
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) ReadRFSignalLevel(byte[] serialNumber)
         {
             // Формирование данных для отправки
             byte[] writeBytes = new byte[7];
@@ -57,10 +63,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка чтения уровня сигнала RF-интерфейса. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
 
-        public byte[] ReadRFSettings(byte[] serialNumber)
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) ReadRFSettings(byte[] serialNumber)
         {
             // Формирование данных для отправки
             byte[] writeBytes = new byte[7];
@@ -99,9 +111,10 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка чтения настроек RF-канала модуля. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
         /// <summary>
+        /// Возвращает полученные и отправленные байты.
         /// channelNumber от 1 до 8;
         /// Код мощности излучения от 0 до 7:
         /// 0 – [7.8 dBm]
@@ -119,7 +132,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="Exception"></exception>
-        public byte[] WriteRFSettings(byte[] serialNumber, int channelNumber, int powerCode)
+        public (byte[], byte[]) WriteRFSettings(byte[] serialNumber, int channelNumber, int powerCode)
         {
             // Проверка входных значений
             if (channelNumber < 1 || channelNumber > 8)
@@ -167,7 +180,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка записи настроек RF-канала модуля. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
     }
 }

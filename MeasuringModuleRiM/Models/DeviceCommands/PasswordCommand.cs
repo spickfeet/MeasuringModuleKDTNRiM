@@ -18,7 +18,14 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             DeviceCommunication = deviceCommunication;
         }
 
-        public byte[] EnterReadPassword(byte[] serialNumber, string password)
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) EnterReadPassword(byte[] serialNumber, string password)
         {
             // Формирование данных для отправки
             byte[] writeBytes = AddSerialAndPasswordBytes(serialNumber, password);
@@ -56,10 +63,17 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка при вводе пароля для чтения пароля. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
 
-        public byte[] EnterWritePassword(byte[] serialNumber, string password)
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) EnterWritePassword(byte[] serialNumber, string password)
         {
             // Формирование данных для отправки
             byte[] writeBytes = AddSerialAndPasswordBytes(serialNumber, password);
@@ -97,7 +111,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка при вводе пароля для записи пароля. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
 
         private byte[] AddSerialAndPasswordBytes(byte[] serialNumber, string password)

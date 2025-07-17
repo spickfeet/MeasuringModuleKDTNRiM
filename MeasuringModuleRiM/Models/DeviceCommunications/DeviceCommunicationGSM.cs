@@ -28,7 +28,6 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
 
         public byte[] SendCommand(byte[] bytesMessage)
         {
-            Console.WriteLine($"\n------SendCommand------: {BitConverter.ToString(bytesMessage)}");
             try
             {
                 // --- Шаг 1: Добавляем номер запроса ---

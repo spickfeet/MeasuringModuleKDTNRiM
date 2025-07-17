@@ -13,6 +13,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             DeviceCommunication = deviceCommunication;
         }
         /// <summary>
+        /// Возвращает полученные и отправленные байты.
         /// Тип параметра: 
         /// 0 – активная мощность, Вт (фаза А);  
         /// 1 - реактивная мощность, Вар (фаза А); 
@@ -22,7 +23,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
         /// </summary>
         /// <param name="paramType"></param>
         /// <returns></returns>
-        public byte[] ReadElectricalIndicators(byte[] serialNumber, int paramType)
+        public (byte[], byte[]) ReadElectricalIndicators(byte[] serialNumber, int paramType)
         {
             if(paramType != 0 && paramType != 1 && paramType != 4 && paramType != 5 && paramType != 6)
             {
@@ -67,10 +68,14 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка чтения электрических показателей. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
-
-        public byte[] ReadSerialNumber()
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) ReadSerialNumber()
         {
             // Формирование данных для отправки
             byte[] writeBytes = new byte[7];
@@ -108,15 +113,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка чтения серийного номера модуля. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
         /// <summary>
+        /// Возвращает полученные и отправленные байты.
         /// Изменить серийный номер на значение от 0 до 16777215
         /// </summary>
         /// <param name="serialNumber"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public byte[] WriteSerialNumber(int serialNumber)
+        public (byte[], byte[]) WriteSerialNumber(int serialNumber)
         {
             if(serialNumber < 0 || serialNumber > 16777215)
             {
@@ -152,10 +158,15 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка записи серийного номера модуля. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
-
-        public byte[] ReadServiceParameters(byte[] serialNumber)
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) ReadServiceParameters(byte[] serialNumber)
         {
             // Формирование данных для отправки
             byte[] writeBytes = new byte[7];
@@ -194,7 +205,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка чтения служебных параметров. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
 
         /// <summary>

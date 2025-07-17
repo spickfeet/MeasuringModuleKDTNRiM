@@ -19,7 +19,13 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             DeviceCommunication = deviceCommunication;
         }
 
-        public byte[] ReadMeasuredValues(byte[] serialNumber)
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) ReadMeasuredValues(byte[] serialNumber)
         {
             // Формирование данных для отправки
             byte[] writeBytes = new byte[7];
@@ -59,10 +65,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Ошибка при чтении значений измеряемых величин. Код ошибки: {(int)receive[5]}.");
             }
 
-            return receive;
+            return (receive, writeBytes);
         }
 
-        public byte[] ReadCalibrationDate(byte[] serialNumber)
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) ReadCalibrationDate(byte[] serialNumber)
         {
             // Формирование данных для отправки
             byte[] writeBytes = new byte[7];
@@ -102,10 +114,18 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Ошибка при чтении даты калибровки модуля. Код ошибки: {(int)receive[5]}.");
             }
 
-            return receive;
+            return (receive, writeBytes);
         }
 
-        public byte[] WriteCalibrationDate(byte[] serialNumber, DateTime date)
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) WriteCalibrationDate(byte[] serialNumber, DateTime date)
         {
             if(date.Year < 2000)
             {
@@ -156,10 +176,11 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка при записи даты калибровки модуля. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
 
         /// <summary>
+        /// Возвращает полученные и отправленные байты.
         /// constPtr = 0 - WGAIN
         /// constPtr = 1 - WOFFS
         /// constPtr = 2 - VARGAIN
@@ -177,7 +198,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
         /// <param name="constPtr"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public byte[] ReadCalibrationConst(byte[] serialNumber, int constPtr)
+        public (byte[], byte[]) ReadCalibrationConst(byte[] serialNumber, int constPtr)
         {
             // 254 и 255 тоже исключены
             if (constPtr < 0 || constPtr > 11)
@@ -224,10 +245,11 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Ошибка при чтении калибровочной константы. Код ошибки: {(int)receive[5]}.");
             }
 
-            return receive;
+            return (receive, writeBytes);
         }
 
         /// <summary>
+        /// Возвращает полученные и отправленные байты.
         /// constPtr = 0 - WGAIN constValue Диапазон: 0…65535 Примечание: Отсутствуют
         /// constPtr = 1 - WOFFS constValue Диапазон: -32768…32767 Примечание: Отсутствуют
         /// constPtr = 2 - VARGAIN constValue Диапазон: 0…65535 Примечание: Отсутствуют
@@ -247,7 +269,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
         /// <param name="constPtr"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public byte[] WriteCalibrationConst(byte[] serialNumber, int constPtr, int constValue)
+        public (byte[], byte[]) WriteCalibrationConst(byte[] serialNumber, int constPtr, int constValue)
         {
 
             if (constPtr < 0 || (constPtr > 11 && constPtr != 254 && constPtr != 255))
@@ -326,9 +348,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Ошибка при записи калибровочной константы. Код ошибки: {(int)receive[5]}.");
             }
 
-            return receive;
+            return (receive, writeBytes);
         }
-        public byte[] RestartMeasurements(byte[] serialNumber)
+
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) RestartMeasurements(byte[] serialNumber)
         {
             // Формирование данных для отправки
             byte[] writeBytes = new byte[7];
@@ -369,7 +398,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Ошибка при чтении измеряемых величин. Код ошибки: {(int)receive[5]}.");
             }
 
-            return receive;
+            return (receive, writeBytes);
         }
     }
 }

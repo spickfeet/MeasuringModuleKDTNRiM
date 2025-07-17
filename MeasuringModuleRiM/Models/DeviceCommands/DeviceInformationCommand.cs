@@ -17,7 +17,14 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             CRC = crc;
             DeviceCommunication = deviceCommunication;
         }
-        public byte[] ReadVersionTypeAndType(byte[] serialNumber)
+
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) ReadVersionTypeAndType(byte[] serialNumber)
         {
             // Формирование данных для отправки
             byte[] writeBytes = new byte[7];
@@ -57,9 +64,16 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
                 throw new Exception($"Ошибка чтения типа устройства и версии ПО. Код ошибки: {(int)receive[5]}.");
             }
 
-            return receive;
+            return (receive, writeBytes);
         }
-        public byte[] ReadWorkTimeSeconds(byte[] serialNumber)
+
+        /// <summary>
+        /// Возвращает полученные и отправленные байты.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public (byte[], byte[]) ReadWorkTimeSeconds(byte[] serialNumber)
         {
             // Формирование данных для отправки
             byte[] writeBytes = new byte[7];
@@ -98,7 +112,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
             {
                 throw new Exception($"Ошибка чтения счётчика наработки. Код ошибки: {(int)receive[5]}.");
             }
-            return receive;
+            return (receive, writeBytes);
         }
     }
 }

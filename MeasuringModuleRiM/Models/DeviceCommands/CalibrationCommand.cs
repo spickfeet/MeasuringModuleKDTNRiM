@@ -274,7 +274,7 @@ namespace MeasuringModuleRiM.Models.DeviceCommands
 
             if (constPtr < 0 || (constPtr > 11 && constPtr != 254 && constPtr != 255))
             {
-                throw new ArgumentException("Неизвестный указатель калибровочной константы.");
+                throw new ArgumentException($"{constPtr} неизвестный указатель калибровочной константы.");
             }
             // Формирование данных для отправки
             byte[] writeBytes = new byte[10];

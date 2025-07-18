@@ -204,6 +204,16 @@ namespace MeasuringModuleRiM
                 (receiveBytes, sendBytes) = _serviceCommand.WriteSerialNumber(serialNumber);
                 _lastReceive = receiveBytes;
                 _lastSend = sendBytes;
+
+                // Сравнение желаемого нового серийного номера и фактически установленного
+                byte[] receiveSerialNumberBytes = receiveBytes.Take(3).ToArray();
+                int receiveSerialNumber = BitConverter.ToInt32([receiveSerialNumberBytes[0], receiveSerialNumberBytes[1], receiveSerialNumberBytes[2], 0]);
+
+                if (serialNumber != receiveSerialNumber)
+                {
+                    throw new Exception("Несоответствие введенного серийного номера и фактически установленного");
+                }
+
                 // Замена подстановка серийного номера после записи
                 byte[] newSerialNumber = BitConverter.GetBytes(serialNumber);
                 Array.Copy(newSerialNumber, 0, _serialNumber, 0, _serialNumber.Length);

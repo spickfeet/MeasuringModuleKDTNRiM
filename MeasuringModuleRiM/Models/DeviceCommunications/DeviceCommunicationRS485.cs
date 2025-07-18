@@ -25,7 +25,9 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
         {
             try
             {
+                _serial.DiscardOutBuffer();
                 _serial.Write(bytesMessage, 0, bytesMessage.Length);
+                _serial.BaseStream.Flush();
                 return ReceiveResult();
             }
             catch (Exception e)

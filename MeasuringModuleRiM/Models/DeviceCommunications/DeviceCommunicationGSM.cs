@@ -42,7 +42,9 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
                 byte[] finalPacket = AddCrLf(encodedPacket); // или encodedPacket, если без реверса
 
                 // --- Шаг 4: Отправляем ---
+                _serial.DiscardOutBuffer();
                 _serial.Write(finalPacket, 0, finalPacket.Length);
+                _serial.BaseStream.Flush();
 
                 // --- Шаг 5: Формируем ответ ---
 
@@ -285,7 +287,6 @@ namespace MeasuringModuleRiM.Models.DeviceCommunications
             }
             catch (Exception e)
             {
-                throw new RiM384Exception(e.Message);
             }
         }
 

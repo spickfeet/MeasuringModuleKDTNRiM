@@ -13,6 +13,7 @@ public class SerialPortExample
     private static void Main(string[] args)
     {
         RiM384 rim384;
+        int countStart;
         while (true)
         {
             Console.WriteLine("Команды");
@@ -20,8 +21,10 @@ public class SerialPortExample
             Console.WriteLine("2 - RS-485");
             Console.Write("Команда: ");
             int protocolCode = int.Parse(Console.ReadLine());
+            Console.Write("Кол-во запусков: ");
+            countStart = int.Parse(Console.ReadLine());
 
-            if (protocolCode == 1)
+            if (protocolCode == 1 && countStart > 0)
             {
                 var serial = new SerialPort("COM6", 4800);
                 serial.Handshake = Handshake.None;
@@ -33,10 +36,10 @@ public class SerialPortExample
                 ICRC crc = new ModbusCRC16();
                 IDeviceCommunication deviceCommunication = new DeviceCommunicationGSM(serial, "89069965121");
 
-                rim384 = new(deviceCommunication, crc, 44922);
+                rim384 = new(deviceCommunication, crc, 51098);
                 break;
             }
-            else if (protocolCode == 2)
+            else if (protocolCode == 2 && countStart > 0)
             {
                 var serial = new SerialPort("COM5", 57600);
                 serial.Handshake = Handshake.None;
@@ -48,7 +51,7 @@ public class SerialPortExample
                 ICRC crc = new ModbusCRC16();
                 IDeviceCommunication deviceCommunication = new DeviceCommunicationRS485(serial);
 
-                rim384 = new(deviceCommunication, crc, 44922);
+                rim384 = new(deviceCommunication, crc, 51098);
                 break;
             }
             else
@@ -58,21 +61,25 @@ public class SerialPortExample
         }
         try
         {
-            for (int i = 0; i < 1000; i++)
+            byte[] data;
+            byte[] lastSend;
+            byte[] lastReceive;
+            Console.WriteLine("Подключение");
+            rim384.StartCommunication();
+            Console.WriteLine("Успешно");
+
+
+
+            for (int i = 0; i < countStart; i++)
             {
-                byte[] data;
-                byte[] lastSend;
-                byte[] lastReceive;
-                Console.WriteLine("Подключение");
-                rim384.StartCommunication();
-                Console.WriteLine("Успешно");
+                Console.WriteLine($"\t\t --------------------Текущий круг {i + 1}--------------------");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
-                //Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(44922))}");
+                Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(51098))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
@@ -140,7 +147,7 @@ public class SerialPortExample
 
                 // Обновление серийного номера
                 // Запись серийного номера
-                //Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(123))}");
+                Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(123))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
@@ -160,7 +167,7 @@ public class SerialPortExample
 
                 // Возвращение старого значения у серийного номера
                 // Запись серийного номера
-                //Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(44922))}");
+                Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(51098))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
@@ -210,6 +217,10 @@ public class SerialPortExample
                 Console.WriteLine("ReadRFSettings");
                 Console.WriteLine($"channelNumber {rFSettings.channelNumber}");
                 Console.WriteLine($"power {rFSettings.power} dBm");
+                (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
+                Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
+                Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
+                Console.WriteLine();
                 Console.WriteLine();
 
                 // Чтение даты калибровки модуля
@@ -235,7 +246,7 @@ public class SerialPortExample
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
-                Console.WriteLine( );
+                Console.WriteLine();
                 Console.WriteLine($"CalibrationDate {rim384.ReadCalibrationDate()}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
@@ -243,73 +254,93 @@ public class SerialPortExample
                 Console.WriteLine();
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(0, 0))}");
+                Console.WriteLine("Сброс констант");
+                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(255, 0))}");
+                (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
+                Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
+                Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
+                Console.WriteLine();
+
+                Console.WriteLine("Чтение калибровочных констант (калибровка)");
+                for (int j = 0; j < 12; j++)
+                {
+                    Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
+                    Console.WriteLine($"ReadCalibrationConst {j}: {rim384.ReadCalibrationConst(j)}");
+                    (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
+                    Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
+                    Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
+                }
+
+                Console.WriteLine("Запись калибровочных констант");
+
+                Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
+                Console.WriteLine($"WriteCalibrationConst 0 {BitConverter.ToString(rim384.WriteCalibrationConst(0, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(1, 0))}");
+                Console.WriteLine($"WriteCalibrationConst 1 {BitConverter.ToString(rim384.WriteCalibrationConst(1, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(2, 0))}");
+                Console.WriteLine($"WriteCalibrationConst 2 {BitConverter.ToString(rim384.WriteCalibrationConst(2, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(3, 0))}");
+                Console.WriteLine($"WriteCalibrationConst 3 {BitConverter.ToString(rim384.WriteCalibrationConst(3, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(4, 0))}");
+                Console.WriteLine($"WriteCalibrationConst 4 {BitConverter.ToString(rim384.WriteCalibrationConst(4, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(5, 0))}");
+                Console.WriteLine($"WriteCalibrationConst 5 {BitConverter.ToString(rim384.WriteCalibrationConst(5, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(6, 0))}");
+                Console.WriteLine($"WriteCalibrationConst 6 {BitConverter.ToString(rim384.WriteCalibrationConst(6, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(7, 0))}");
+                Console.WriteLine($"WriteCalibrationConst 7 {BitConverter.ToString(rim384.WriteCalibrationConst(7, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(8, 0))}");
+                Console.WriteLine($"WriteCalibrationConst 8 {BitConverter.ToString(rim384.WriteCalibrationConst(8, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(9, 0))}");
+                Console.WriteLine($"WriteCalibrationConst 9 {BitConverter.ToString(rim384.WriteCalibrationConst(9, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(10, 0))}");
+                Console.WriteLine($"WriteCalibrationConst 10 {BitConverter.ToString(rim384.WriteCalibrationConst(10, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
 
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
-                Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(11, 200))}");
+                Console.WriteLine($"WriteCalibrationConst 11 {BitConverter.ToString(rim384.WriteCalibrationConst(11, 200))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
@@ -331,6 +362,9 @@ public class SerialPortExample
                 Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
                 Console.WriteLine("Сброс констант");
                 Console.WriteLine($"WriteCalibrationConst {BitConverter.ToString(rim384.WriteCalibrationConst(255, 0))}");
+                (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
+                Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
+                Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
                 Console.WriteLine();
 
                 for (int j = 0; j < 12; j++)

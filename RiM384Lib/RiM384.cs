@@ -211,7 +211,7 @@ namespace RiM384Lib
 
                 if (serialNumber != receiveSerialNumber)
                 {
-                    throw new Exception("Несоответствие введенного серийного номера и фактически установленного");
+                    throw new Exception($"Несоответствие введенного серийного номера {serialNumber} и фактически установленного {receiveSerialNumber}");
                 }
 
                 // Замена подстановка серийного номера после записи

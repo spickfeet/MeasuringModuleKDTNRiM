@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MeasuringModuleRiM.Models.CRC
+namespace RiM384Lib.Models.CRC
 {
     public interface ICRC
     {

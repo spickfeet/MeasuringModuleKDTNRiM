@@ -1,7 +1,7 @@
-﻿using MeasuringModuleRiM.Models.CRC;
-using MeasuringModuleRiM.Models.DeviceCommunications;
+﻿using RiM384Lib.Models.CRC;
+using RiM384Lib.Models.DeviceCommunications;
 
-namespace MeasuringModuleRiM.Models.DeviceCommands
+namespace RiM384Lib.Models.DeviceCommands
 {
     internal class ServiceCommand : IDeviceCommand
     {

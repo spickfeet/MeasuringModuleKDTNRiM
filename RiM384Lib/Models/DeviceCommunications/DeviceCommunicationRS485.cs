@@ -1,4 +1,4 @@
-﻿using MeasuringModuleRiM.Exceptions;
+﻿using RiM384Lib.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MeasuringModuleRiM.Models.DeviceCommunications
+namespace RiM384Lib.Models.DeviceCommunications
 {
     public class DeviceCommunicationRS485 : IDeviceCommunication
     {

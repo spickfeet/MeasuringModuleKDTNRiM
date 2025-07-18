@@ -1,5 +1,5 @@
-﻿using MeasuringModuleRiM.Models.CRC;
-using MeasuringModuleRiM.Models.DeviceCommunications;
+﻿using RiM384Lib.Models.CRC;
+using RiM384Lib.Models.DeviceCommunications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
-namespace MeasuringModuleRiM.Models.DeviceCommands
+namespace RiM384Lib.Models.DeviceCommands
 {
     internal class RFSettingsCommand : IDeviceCommand
     {

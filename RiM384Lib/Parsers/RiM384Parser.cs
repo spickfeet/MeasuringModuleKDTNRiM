@@ -1,4 +1,4 @@
-﻿using MeasuringModuleRiM.Models.Data;
+﻿using RiM384Lib.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace MeasuringModuleRiM.Parsers
+namespace RiM384Lib.Parsers
 {
     internal class RiM384Parser
     {

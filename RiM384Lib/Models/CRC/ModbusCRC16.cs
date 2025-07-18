@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace MeasuringModuleRiM.Models.CRC
+namespace RiM384Lib.Models.CRC
 {
     public class ModbusCRC16 : ICRC
     {

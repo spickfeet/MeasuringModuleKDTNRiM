@@ -1,9 +1,9 @@
-﻿using MeasuringModuleRiM.Exceptions;
-using MeasuringModuleRiM.Models.CRC;
-using MeasuringModuleRiM.Models.Data;
-using MeasuringModuleRiM.Models.DeviceCommands;
-using MeasuringModuleRiM.Models.DeviceCommunications;
-using MeasuringModuleRiM.Parsers;
+﻿using RiM384Lib.Exceptions;
+using RiM384Lib.Models.CRC;
+using RiM384Lib.Models.Data;
+using RiM384Lib.Models.DeviceCommands;
+using RiM384Lib.Models.DeviceCommunications;
+using RiM384Lib.Parsers;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MeasuringModuleRiM
+namespace RiM384Lib
 {
     /// <summary>
     /// Исключения бросаемые данной библиотекой это RiM384Exception

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MeasuringModuleRiM.Models.Data
+namespace RiM384Lib.Models.Data
 {
     public struct VersionAndType
     {

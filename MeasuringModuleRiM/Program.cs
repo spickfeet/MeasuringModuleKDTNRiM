@@ -1,12 +1,9 @@
-﻿using MeasuringModuleRiM;
-using MeasuringModuleRiM.Exceptions;
-using MeasuringModuleRiM.Models.CRC;
-using MeasuringModuleRiM.Models.Data;
-using MeasuringModuleRiM.Models.DeviceCommunications;
-using System;
+﻿using RiM384Lib;
+using RiM384Lib.Exceptions;
+using RiM384Lib.Models.CRC;
+using RiM384Lib.Models.Data;
+using RiM384Lib.Models.DeviceCommunications;
 using System.IO.Ports;
-using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class SerialPortExample
 {

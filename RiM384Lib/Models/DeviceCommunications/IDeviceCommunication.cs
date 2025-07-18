@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MeasuringModuleRiM.Models.DeviceCommunications
+namespace RiM384Lib.Models.DeviceCommunications
 {
     public interface IDeviceCommunication : IDisposable
     {

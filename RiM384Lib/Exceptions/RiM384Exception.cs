@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MeasuringModuleRiM.Exceptions
+namespace RiM384Lib.Exceptions
 {
     public class RiM384Exception : Exception
     {

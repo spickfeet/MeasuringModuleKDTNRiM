@@ -11,15 +11,21 @@ public class SerialPortExample
     {
         RiM384 rim384;
         int countStart;
+        int rim384SerialNumber;
         while (true)
         {
             Console.WriteLine("Команды");
             Console.WriteLine("1 - GSM");
             Console.WriteLine("2 - RS-485");
+
             Console.Write("Команда: ");
             int protocolCode = int.Parse(Console.ReadLine());
+
             Console.Write("Кол-во запусков: ");
             countStart = int.Parse(Console.ReadLine());
+
+            Console.Write("Серийный номер: ");
+            rim384SerialNumber = int.Parse(Console.ReadLine()); ;
 
             if (protocolCode == 1 && countStart > 0)
             {
@@ -33,7 +39,7 @@ public class SerialPortExample
                 ICRC crc = new ModbusCRC16();
                 IDeviceCommunication deviceCommunication = new DeviceCommunicationGSM(serial, "89069965121");
 
-                rim384 = new(deviceCommunication, crc, 51098);
+                rim384 = new(deviceCommunication, crc, rim384SerialNumber);
                 break;
             }
             else if (protocolCode == 2 && countStart > 0)
@@ -48,7 +54,7 @@ public class SerialPortExample
                 ICRC crc = new ModbusCRC16();
                 IDeviceCommunication deviceCommunication = new DeviceCommunicationRS485(serial);
 
-                rim384 = new(deviceCommunication, crc, 51098);
+                rim384 = new(deviceCommunication, crc, rim384SerialNumber);
                 break;
             }
             else
@@ -67,7 +73,7 @@ public class SerialPortExample
 
             Console.WriteLine($"SerialNumber {rim384.ReadSerialNumber()}");
 
-            Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(51098))}");
+            Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(rim384SerialNumber))}");
             (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
             Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
             Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
@@ -171,7 +177,7 @@ public class SerialPortExample
 
                 // Возвращение старого значения у серийного номера
                 // Запись серийного номера
-                Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(51098))}");
+                Console.WriteLine($"WriteSerialNumber {BitConverter.ToString(rim384.WriteSerialNumber(rim384SerialNumber))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
                 Console.WriteLine($"Receive = {BitConverter.ToString(lastReceive)}");
@@ -191,7 +197,7 @@ public class SerialPortExample
                 Console.WriteLine();
 
                 // Обновление настроек RF-канала модуля
-                Запись настроек RF - канала модуля
+                // Запись настроек RF - канала модуля
                 Console.WriteLine($"WriteRFSettings {BitConverter.ToString(rim384.WriteRFSettings(1, 0))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
@@ -209,7 +215,7 @@ public class SerialPortExample
                 Console.WriteLine();
 
                 // Возврат настроек RF-канала модуля
-                Запись настроек RF - канала модуля
+                //Запись настроек RF - канала модуля
                 Console.WriteLine($"WriteRFSettings {BitConverter.ToString(rim384.WriteRFSettings(1, 7))}");
                 (lastSend, lastReceive) = rim384.GetLastSendAndReceiveBytes();
                 Console.WriteLine($"Send = {BitConverter.ToString(lastSend)}");
